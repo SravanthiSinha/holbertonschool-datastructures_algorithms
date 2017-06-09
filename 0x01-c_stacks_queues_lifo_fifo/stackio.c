@@ -6,7 +6,7 @@
  * @n : int to be added to the stack
  *
  * Return: on malloc Failure: exits with EXIT_FAILURE
- * on sucess returns 0, on failure returns 1
+ * on sucess returns 1, on failure returns 0
  */
 int push(stack_t **stack, int n)
 {
@@ -24,14 +24,11 @@ int push(stack_t **stack, int n)
 		if (head != NULL)
 			head->prev = temp;
 		*stack = temp;
-		return (0);
+		return (1);
 	}
-	else
-	{
 		printf("Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	return (1);
+		return (0);
+
 }
 
 /**
@@ -50,6 +47,27 @@ void print_stack(stack_t *stack)
 		printf("%d\n", node->n);
 		node = node->next;
 	}
+}
+
+/**
+ * print_stack_top - Prints  the top of stack
+ * @stack : stack to be printed
+ * @lineno : line no of the instruction
+ *
+ * Return: on sucess returns 1, on failure returns 0
+ */
+int print_stack_top(stack_t *stack, int lineno)
+{
+	stack_t *node;
+
+	node = stack;
+	if (node != NULL)
+	{
+		printf("%d\n", node->n);
+		return (1);
+	}
+	printf("L%d: can't pint, stack empty\n", lineno);
+	return (0);
 }
 
 /**

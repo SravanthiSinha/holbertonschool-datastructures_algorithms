@@ -1,6 +1,6 @@
 #include "monty.h"
 
-static char *opcodes[2] = {"push", "pall"};
+static char *opcodes[3] = {"push", "pall", "pint"};
 
 /**
  * check_element_int - Takes an instruction set and checks if the operand is
@@ -41,31 +41,41 @@ int check_element_int(char *line, int len, char *opcode)
  *
  * Return: On success - 1, on failure 0
  */
-int validate_instruction(char *line, ssize_t len, char *opcode, int lno)
+int validate_instruction(char *line, ssize_t len, char **opcode, int lno)
 {
+	int exit_value;
 
+	exit_value = 1;
 	if (strstr(line, opcodes[0]) != NULL)
 	{
 		/* contains push*/
-		opcode = strdup(opcodes[0]);
-		if (check_element_int(line, len, opcode))
-			return (1);
-		printf("L%d: usage: push integer\n", lno);
-		exit(EXIT_FAILURE);
+		*opcode = strdup(opcodes[0]);
+		if (!check_element_int(line, len, *opcode))
+		{
+			printf("L%d: usage: push integer\n", lno);
+			exit_value = EXIT_FAILURE;
+		}
 	}
 	else if (strstr(line, opcodes[1]) != NULL)
 	{
 		/* contains pall*/
-		opcode = strdup(opcodes[1]);
-		return (1);
+		*opcode = strdup(opcodes[1]);
+	}
+	else if (strstr(line, opcodes[2]) != NULL)
+	{
+		/* contains pint*/
+		*opcode = strdup(opcodes[2]);
 	}
 	else if (len == 1)
 	{
 		/* contains blank line*/
-		opcode = NULL;
-		return (1);
+		*opcode = NULL;
 	}
-	return (0);
+	else
+	{
+		exit_value = 0;
+	}
+	return (exit_value);
 }
 
 
@@ -84,20 +94,20 @@ int validate(FILE *fp)
 	char *opcode;
 
 	lineno = 0;
-	line = NULL;
 	opcode = NULL;
-	len = 0;
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		lineno++;
-		if (!validate_instruction(line, read, opcode, lineno))
+		if (!validate_instruction(line, read, &opcode, lineno))
 		{
 			printf("L%d: unknown instruction %s\n", lineno, opcode);
+			free(opcode);
 			return (0);
 		}
+		free(opcode);
 	}
-	rewind(fp);
 	if (line)
 		free(line);
+	rewind(fp);
 	return (1);
 }

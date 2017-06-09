@@ -1,7 +1,7 @@
 #include "monty.h"
 
 
-static char *opcodes[2] = {"push", "pall"};
+static char *opcodes[3] = {"push", "pall", "pint"};
 
 /**
  * execute - Handles the crud operations on stack
@@ -9,27 +9,32 @@ static char *opcodes[2] = {"push", "pall"};
  *
  * Return: Nothing
  */
-void execute(FILE *fp)
+int execute(FILE *fp)
 {
 	stack_t *stack;
 	char *line;
 	size_t len;
 	ssize_t read;
+	int lineno;
+	int exit_value;
 
+	exit_value = 1;
+	lineno	= 0;
 	stack = NULL;
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
-		if (strstr(line, opcodes[0]) != NULL)
-			/* contains push*/
-			push(&stack, get_element_int(line, read, opcodes[0]));
-
-		if (strstr(line, opcodes[1]) != NULL)
-			/* contains pall*/
+		if (strstr(line, opcodes[0]) != NULL)/* contains push*/
+			exit_value = push(&stack, get_element_int(line, read, opcodes[0]));
+		if (strstr(line, opcodes[1]) != NULL)/* contains pall*/
 			print_stack(stack);
+		if (strstr(line, opcodes[2]) != NULL)/* contains pint*/
+			exit_value =	print_stack_top(stack, lineno);
+		lineno++;
 	}
 	free_stack(stack);
 	if (line)
 		free(line);
+	return (exit_value);
 }
 
 /**
@@ -42,7 +47,9 @@ void execute(FILE *fp)
 int main(int argc, __attribute__((unused)) char **argv)
 {
 	FILE *fp;
+	int exit_value;
 
+	exit_value = EXIT_FAILURE;
 	if (argc != 2)
 		printf("USAGE: monty file\n");
 	else
@@ -54,12 +61,12 @@ int main(int argc, __attribute__((unused)) char **argv)
 		{
 			if (validate(fp))
 			{
-				execute(fp);
+				exit_value = execute(fp);
 				fclose(fp);
-				return (EXIT_SUCCESS);
+				return (exit_value == 0 ? EXIT_FAILURE : EXIT_SUCCESS);
 			}
 			fclose(fp);
 		}
 	}
-	exit(EXIT_FAILURE);
+	return (exit_value);
 }

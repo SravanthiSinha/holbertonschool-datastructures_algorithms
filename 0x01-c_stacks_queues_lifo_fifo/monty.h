@@ -11,10 +11,11 @@
 
 
 int validate(FILE *fp);
-int validate_instruction(char *line, ssize_t read, char *opcode, int lineno);
+int validate_instruction(char *line, ssize_t read, char **opcode, int lineno);
 int check_element_int(char *line, int len, char *opcode);
 int get_element_int(char *line, int len, char *opcode);
 int push(stack_t **stack, int n);
 void print_stack(stack_t *stack);
 void free_stack(stack_t *stack);
+int print_stack_top(stack_t *stack, int lineno);
 #endif
