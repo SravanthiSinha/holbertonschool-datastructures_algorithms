@@ -27,7 +27,7 @@ int execute(FILE *fp)
 		strstrip(line);
 		if (strlen(line))
 		{
-			token = strtok(strstrip(line), " ");
+			token = strtok(line, " ");
 			if (strcmp(token, opcodes[0]) == 0) /* contains push*/
 				exit_value = push_stack(&stack, atoi(strtok(NULL, line)));
 			else if (strcmp(token, opcodes[1]) == 0) /* contains pall*/
@@ -65,7 +65,7 @@ int main(int argc, __attribute__((unused)) char **argv)
 	int exit_value;
 
 	exit_value = EXIT_FAILURE;
-	if (argc != 2)
+	if (argc < 2)
 		printf("USAGE: monty file\n");
 	else
 		{
@@ -74,14 +74,11 @@ int main(int argc, __attribute__((unused)) char **argv)
 				printf("Error: Can't open file %s\n", argv[1]);
 			else
 			{
-				if (validate(fp))
-				{
+				exit_value = validate(fp);
+				if (exit_value > 0)
 					exit_value = execute(fp);
-					fclose(fp);
-					return (exit_value == 0 ? EXIT_FAILURE : EXIT_SUCCESS);
-				}
 				fclose(fp);
 			}
 		}
-	return (exit_value);
+	return (exit_value <= 0 ? EXIT_FAILURE : EXIT_SUCCESS);
 }

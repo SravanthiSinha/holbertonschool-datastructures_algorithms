@@ -39,7 +39,7 @@ int check_element_int(char *line, int len, char *opcode)
  * @opcode : The operation code
  * @lno : The line no of the instruction
  *
- * Return: On success - 1, on failure 0
+ * Return: On success - 1, on failure 0, on invalid instruction -1
  */
 int validate_instruction(char *line, ssize_t len, char **opcode, int lno)
 {
@@ -53,7 +53,7 @@ int validate_instruction(char *line, ssize_t len, char **opcode, int lno)
 		if (!check_element_int(line, len, *opcode))
 		{
 			printf("L%d: usage: push integer\n", lno);
-			exit_value = EXIT_FAILURE;
+			exit_value = -1;
 		}
 	}
 	else if (strstr(line, opcodes[1]) != NULL)
@@ -97,6 +97,8 @@ int validate(FILE *fp)
 	ssize_t read;
 	int lineno;
 	char *opcode;
+	int exit_value;
+
 
 	lineno = 0;
 	opcode = NULL;
@@ -105,7 +107,8 @@ int validate(FILE *fp)
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		lineno++;
-		if (!validate_instruction(line, read, &opcode, lineno))
+		exit_value = validate_instruction(line, read, &opcode, lineno);
+		if (exit_value  == 0)
 		{
 			printf("L%d: unknown instruction %s\n", lineno, opcode);
 			free(opcode);
@@ -116,5 +119,5 @@ int validate(FILE *fp)
 	if (line)
 		free(line);
 	rewind(fp);
-	return (1);
+	return (exit_value);
 }
