@@ -1,6 +1,6 @@
 #include "monty.h"
 
-static char *opcodes[3] = {"push", "pall", "pint"};
+static char *opcodes[4] = {"push", "pall", "pint", "pop"};
 
 /**
  * check_element_int - Takes an instruction set and checks if the operand is
@@ -66,9 +66,14 @@ int validate_instruction(char *line, ssize_t len, char **opcode, int lno)
 		/* contains pint*/
 		*opcode = strdup(opcodes[2]);
 	}
+	else if (strstr(line, opcodes[3]) != NULL)
+	{
+		/* contains pop*/
+		*opcode = strdup(opcodes[3]);
+	}
 	else if (len == 1)
 	{
-		/* contains blank line*/
+				/* contains blank line*/
 		*opcode = NULL;
 	}
 	else
@@ -95,6 +100,8 @@ int validate(FILE *fp)
 
 	lineno = 0;
 	opcode = NULL;
+	read = 0;
+	line = 0;
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		lineno++;

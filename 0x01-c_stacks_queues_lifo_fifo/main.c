@@ -1,7 +1,6 @@
 #include "monty.h"
 
-
-static char *opcodes[3] = {"push", "pall", "pint"};
+static char *opcodes[4] = {"push", "pall", "pint", "pop"};
 
 /**
  * execute - Handles the crud operations on stack
@@ -12,29 +11,45 @@ static char *opcodes[3] = {"push", "pall", "pint"};
 int execute(FILE *fp)
 {
 	stack_t *stack;
-	char *line;
-	size_t len;
+	instruction_t *instruction;
+	char *line, *token;
 	ssize_t read;
-	int lineno;
+	size_t len;
+	unsigned int lineno;
 	int exit_value;
 
 	exit_value = 1;
-	lineno	= 0;
+	lineno = 0, len = 0, read = 0;
 	stack = NULL;
+	instruction = NULL;
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
-		if (strstr(line, opcodes[0]) != NULL)/* contains push*/
-			exit_value = push(&stack, get_element_int(line, read, opcodes[0]));
-		if (strstr(line, opcodes[1]) != NULL)/* contains pall*/
-			print_stack(stack);
-		if (strstr(line, opcodes[2]) != NULL)/* contains pint*/
-			exit_value =	print_stack_top(stack, lineno);
+		strstrip(line);
+		if (strlen(line))
+		{
+			token = strtok(strstrip(line), " ");
+			if (strcmp(token, opcodes[0]) == 0) /* contains push*/
+				exit_value = push_stack(&stack, atoi(strtok(NULL, line)));
+			else if (strcmp(token, opcodes[1]) == 0) /* contains pall*/
+				print_stack(stack);
+			else
+			{
+				instruction = malloc(sizeof(instruction_t));
+				instruction->opcode = strdup(token);
+				instruction->f = get_op_func(instruction->opcode);
+				if (instruction->f != NULL)
+					instruction->f(&stack, lineno);
+				free(instruction->opcode);
+			}
+		}
+		if (exit_value == 0)
+			return (exit_value);
 		lineno++;
 	}
 	free_stack(stack);
 	if (line)
 		free(line);
-	return (exit_value);
+	return (1);
 }
 
 /**
@@ -53,20 +68,20 @@ int main(int argc, __attribute__((unused)) char **argv)
 	if (argc != 2)
 		printf("USAGE: monty file\n");
 	else
-	{
-		fp = fopen(argv[1], "rt");
-		if (fp == NULL)
-			printf("Error: Can't open file %s\n", basename(argv[1]));
-		else
 		{
-			if (validate(fp))
+			fp = fopen(argv[1], "rt");
+			if (fp == NULL)
+				printf("Error: Can't open file %s\n", argv[1]);
+			else
 			{
-				exit_value = execute(fp);
+				if (validate(fp))
+				{
+					exit_value = execute(fp);
+					fclose(fp);
+					return (exit_value == 0 ? EXIT_FAILURE : EXIT_SUCCESS);
+				}
 				fclose(fp);
-				return (exit_value == 0 ? EXIT_FAILURE : EXIT_SUCCESS);
 			}
-			fclose(fp);
 		}
-	}
 	return (exit_value);
 }

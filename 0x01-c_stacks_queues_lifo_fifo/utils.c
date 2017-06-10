@@ -25,3 +25,30 @@ int get_element_int(char *line, int len, char *opcode)
 	}
 	return (0);
 }
+
+
+/**
+ * strstrip - Takes an string and trims the trailing and leading spaces
+ * @s : string
+ *
+ * Return: stripped string
+ */
+char *strstrip(char *s)
+{
+	size_t size;
+	char *end;
+
+	size = strlen(s);
+	if (!size)
+		return (s);
+
+	end = s + size - 1;
+	while (end >= s && isspace(*end))
+		end--;
+	*(end + 1) = '\0';
+
+	while (*s && isspace(*s))
+		s++;
+
+	return (s);
+}

@@ -1,14 +1,14 @@
 #include "monty.h"
 
 /**
- * push - Creates the stack and pushes the element to top
+ * push_stack - Creates the stack and pushes the element to top
  * @stack : stack to be built
  * @n : int to be added to the stack
  *
  * Return: on malloc Failure: exits with EXIT_FAILURE
  * on sucess returns 1, on failure returns 0
  */
-int push(stack_t **stack, int n)
+int push_stack(stack_t **stack, int n)
 {
 	stack_t *temp;
 	stack_t *head;
@@ -28,6 +28,30 @@ int push(stack_t **stack, int n)
 	}
 		printf("Error: malloc failed\n");
 		return (0);
+
+}
+
+/**
+ * pop_stack - Pops/ deletes the top  elementof stack
+ * @stack : stack to be used
+ * @lineno : line no of the instruction
+ */
+void pop_stack(stack_t **stack, unsigned int lineno)
+{
+	stack_t *node;
+
+	node = *stack;
+	if (node != NULL && node->next != NULL)
+	{
+		node = node->next;
+		*stack = node;
+	}
+	else if (node != NULL && node->next == NULL)
+	{
+		*stack = NULL;
+	}
+	else
+	printf("L%d: can't pop an empty stack\n", lineno);
 
 }
 
@@ -53,21 +77,17 @@ void print_stack(stack_t *stack)
  * print_stack_top - Prints  the top of stack
  * @stack : stack to be printed
  * @lineno : line no of the instruction
- *
- * Return: on sucess returns 1, on failure returns 0
  */
-int print_stack_top(stack_t *stack, int lineno)
+void print_stack_top(stack_t **stack, unsigned int lineno)
 {
 	stack_t *node;
 
-	node = stack;
+	node = *stack;
 	if (node != NULL)
-	{
-		printf("%d\n", node->n);
-		return (1);
-	}
+	printf("%d\n", node->n);
+else
 	printf("L%d: can't pint, stack empty\n", lineno);
-	return (0);
+
 }
 
 /**

@@ -8,14 +8,19 @@
 #include "stack_s.h"
 #include "instruction_s.h"
 #include <malloc.h>
-
+#include <ctype.h>
 
 int validate(FILE *fp);
 int validate_instruction(char *line, ssize_t read, char **opcode, int lineno);
 int check_element_int(char *line, int len, char *opcode);
 int get_element_int(char *line, int len, char *opcode);
-int push(stack_t **stack, int n);
+int push_stack(stack_t **stack, int n);
 void print_stack(stack_t *stack);
 void free_stack(stack_t *stack);
-int print_stack_top(stack_t *stack, int lineno);
+void print_stack_top(stack_t **stack, unsigned int lineno);
+void pop_stack(stack_t **stack, unsigned int lineno);
+typedef void (*funcPtr)(stack_t **stack, unsigned int line_number);
+
+void (*get_op_func(char *c))(stack_t **stack, unsigned int line_number);
+char *strstrip(char *s);
 #endif
