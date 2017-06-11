@@ -26,9 +26,8 @@ int push_stack(stack_t **stack, int n)
 		*stack = temp;
 		return (1);
 	}
-		printf("Error: malloc failed\n");
-		return (0);
-
+	print_error(MONTY_ERROR_MALLOC, 0, NULL);
+	return (0);
 }
 
 /**
@@ -51,8 +50,7 @@ void pop_stack(stack_t **stack, unsigned int lineno)
 		*stack = NULL;
 	}
 	else
-	printf("L%d: can't pop an empty stack\n", lineno);
-
+		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pop");
 }
 
 /**
@@ -84,10 +82,9 @@ void print_stack_top(stack_t **stack, unsigned int lineno)
 
 	node = *stack;
 	if (node != NULL)
-	printf("%d\n", node->n);
-else
-	printf("L%d: can't pint, stack empty\n", lineno);
-
+		printf("%d\n", node->n);
+	else
+		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pint");
 }
 
 /**
