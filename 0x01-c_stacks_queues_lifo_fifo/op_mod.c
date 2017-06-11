@@ -1,19 +1,19 @@
 #include "monty.h"
 
 /**
- * divide - divides the second top element of the stack by the top
- * element of the stack
+ * mod - computes the rest of the division of the second top element
+ * of the stack by the top element of the stack
  * @head: pointer to head pointer of stack_t list.
  * @lineno: line number of opcode
  * Return: nothing
  **/
-void divide(stack_t **head, unsigned int lineno)
+void mod(stack_t **head, unsigned int lineno)
 {
 	stack_t *tmp;
 
 	if (!head || !(*head) || !(*head)->next)
 	{
-		print_error(MONTY_ERROR_STACK_SHORT, lineno, "div");
+		print_error(MONTY_ERROR_STACK_SHORT, lineno, "mod");
 		if (*head)
 		{
 			free(*head);
@@ -30,6 +30,6 @@ void divide(stack_t **head, unsigned int lineno)
 	tmp = *head;
 	*head = (*head)->next;
 	(*head)->prev = NULL;
-	(*head)->n /= tmp->n;
+	(*head)->n %= tmp->n;
 	free(tmp);
 }
