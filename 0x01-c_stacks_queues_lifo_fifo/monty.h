@@ -66,6 +66,7 @@ void mod(stack_t **stack, unsigned int lineno);
 void pchar(stack_t **stack, unsigned int lineno);
 void pstr(stack_t **stack, unsigned int lineno);
 void rotl(stack_t **stack, unsigned int lineno);
+void rotr(stack_t **stack, unsigned int lineno);
 
 
 void print_error(int errcode, int lineno, char *opcode);

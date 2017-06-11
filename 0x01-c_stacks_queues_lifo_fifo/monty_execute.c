@@ -23,6 +23,7 @@ int monty_execute(stack_t **stack, char **tokens, unsigned int lineno)
 		{ "pchar", &pchar },
 		{ "pstr", &pstr },
 		{ "rotl", &rotl },
+		{ "rotr", &rotr },
 		{ NULL, NULL }
 	};
 	int i;
