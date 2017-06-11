@@ -19,7 +19,12 @@ void print_error(int errorcode, int lineno, char *opcode)
 	else if (errorcode == MONTY_ERROR_INT)
 		printf("L%d: usage: push integer\n", lineno);
 	else if (errorcode == MONTY_ERROR_STACK_EMPTY)
-		printf("L%d: can't %s, stack empty\n", lineno, opcode);
+	{
+		if (strcmp(opcode, "pint") == 0)
+			printf("L%d: can't %s, stack empty\n", lineno, opcode);
+		if (strcmp(opcode, "pop") == 0)
+			printf("L%d: can't %s an empty stack\n", lineno, opcode);
+	}
 	else if (errorcode == MONTY_ERROR_DIV_BY_ZERO)
 		printf("L%d: division by zero\n", lineno);
 }
