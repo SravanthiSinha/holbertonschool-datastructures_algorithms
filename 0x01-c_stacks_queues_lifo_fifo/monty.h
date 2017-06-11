@@ -52,7 +52,7 @@ typedef struct instruction_s
 int check_element_int(char *line);
 char *strstrip(char *s);
 
-int push_stack(stack_t **stack, int n);
+int push_stack(stack_t **stack, char *n, int lineno);
 void print_stack(stack_t **stack, unsigned int lineno);
 void free_stack(stack_t *stack);
 void print_stack_top(stack_t **stack, unsigned int lineno);

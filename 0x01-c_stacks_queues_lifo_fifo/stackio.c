@@ -3,22 +3,29 @@
 /**
  * push_stack - Creates the stack and pushes the element to top
  * @stack : stack to be built
- * @n : int to be added to the stack
+ * @n : operand to be added to the stack
+ * @lineno : line no of the instruction
  *
  * Return: on malloc Failure: exits with EXIT_FAILURE
  * on sucess returns 1, on failure returns 0
  */
-int push_stack(stack_t **stack, int n)
+int push_stack(stack_t **stack, char *n, int lineno)
 {
 	stack_t *temp;
 	stack_t *head;
+
+	if (!n || isnum(n) == 0)
+	{
+		print_error(MONTY_ERROR_INT, lineno, NULL);
+		exit(EXIT_FAILURE);
+	}
 
 	head = *stack;
 	temp = malloc(sizeof(stack_t));
 
 	if (temp != NULL)
 	{
-		temp->n = n;
+		temp->n = atoi(n);
 		temp->prev = NULL;
 		temp->next = head;
 		if (head != NULL)
