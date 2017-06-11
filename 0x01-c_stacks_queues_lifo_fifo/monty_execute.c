@@ -9,8 +9,14 @@
  */
 int monty_execute(char **tokens, unsigned int lineno)
 {
-	instruction_t *instruction;
+	instruction_t func[] = {
+		{ "pall", &print_stack },
+		{ "pint", &print_stack_top},
+		{ "pop", &pop_stack },
+		{ NULL, NULL }
+	};
 	int exit_value;
+	int i;
 
 	exit_value = 0;
 	if (strcmp(tokens[0], "push") == 0) /* contains push*/
@@ -26,22 +32,18 @@ int monty_execute(char **tokens, unsigned int lineno)
 			return (0);
 		}
 	}
-	else
+
+	for (i = 0; func[i].opcode; i++)
 	{
-		instruction = malloc(sizeof(instruction_t));
-		instruction->opcode = strdup(tokens[0]);
-		instruction->f = get_op_func(instruction->opcode);
-		if (instruction->f != NULL)
+		if (strcmp(func[i].opcode, tokens[0]) == 0)
 		{
-			instruction->f(&stack, lineno);
+			func[i].f(&stack, lineno);
 			exit_value = 1;
 		}
-		free(instruction->opcode);
-		free(instruction);
 	}
+
 	if (exit_value == 0)
-	{
 	print_error(MONTY_ERROR_UNKNOWN_INSTR, lineno, tokens[0]);
-	}
+
 	return (exit_value);
 }

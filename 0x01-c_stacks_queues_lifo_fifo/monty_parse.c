@@ -39,7 +39,8 @@ int monty_parse(FILE *fp)
 	lineno = 0;
 	len = 0;
 	read = 0;
-	while ((read = getline(&line, &len, fp)) != -1)
+	line = NULL;
+	while (((read = getline(&line, &len, fp)) != -1) && exit_value)
 	{
 		lineno++;
 		strstrip(line); /* strip the empty lines*/
@@ -47,8 +48,6 @@ int monty_parse(FILE *fp)
 		{
 			parse(line, tokens);
 			exit_value = monty_execute(tokens, lineno);
-			if (!exit_value)
-			break;
 		}
 	}
 	free_stack(stack);

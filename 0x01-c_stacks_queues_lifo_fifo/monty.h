@@ -58,10 +58,6 @@ void free_stack(stack_t *stack);
 void print_stack_top(stack_t **stack, unsigned int lineno);
 void pop_stack(stack_t **stack, unsigned int lineno);
 
-typedef void (*funcPtr)(stack_t **stack, unsigned int line_number);
-void (*get_op_func(char *c))(stack_t **stack, unsigned int line_number);
-
-
 void print_error(int errcode, int lineno, char *opcode);
 int monty_parse(FILE *fp);
 int monty_execute(char **tokens, unsigned int lineno);
