@@ -34,7 +34,7 @@ void monty_parse(FILE *fp)
 	char *tokens[3] = {NULL, NULL, NULL};
 	int exit_value;
 
-	exit_value  = 0;
+	exit_value  = 1;
 	lineno = 0;
 	len = 0;
 	read = 0;

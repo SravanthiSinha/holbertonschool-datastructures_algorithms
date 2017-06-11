@@ -1,6 +1,6 @@
 #include "monty.h"
 
-stack_t *stack;
+stack_t *stack = NULL;
 /**
  * main - Starts the program
  * @argc : no of command line arguments
