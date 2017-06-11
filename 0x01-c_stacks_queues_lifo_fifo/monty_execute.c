@@ -25,6 +25,10 @@ int monty_execute(stack_t **stack, char **tokens, unsigned int lineno)
 		push_stack(stack, tokens[1], lineno);
 		return (1);
 	}
+	else if (strcmp(tokens[0], "nop") == 0) /* contains nop*/
+	{
+		return (1);
+	}
 	for (i = 0; fun[i].opcode; i++)
 	{
 		if (strcmp(fun[i].opcode, tokens[0]) == 0)
