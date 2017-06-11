@@ -24,5 +24,6 @@ void monty_execute(char *line, unsigned int lineno)
 		if (instruction->f != NULL)
 			instruction->f(&stack, lineno);
 		free(instruction->opcode);
+		free(instruction);
 	}
 }

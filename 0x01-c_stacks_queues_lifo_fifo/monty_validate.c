@@ -48,6 +48,7 @@ int monty_validate(char *line, unsigned int lineno)
 	{
 		if (check_element_int(line))
 			return (1);
+		free(line);
 		print_error(MONTY_ERROR_INT, lineno, "NULL");
 	}
 	else
@@ -59,6 +60,8 @@ int monty_validate(char *line, unsigned int lineno)
 				return (1);
 		}
 	}
+	free(opcode);
+	free(line);
 	print_error(MONTY_ERROR_UNKNOWN_INSTR, lineno, opcode);
 	return (0);
 }

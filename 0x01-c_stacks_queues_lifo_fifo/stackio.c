@@ -37,20 +37,17 @@ int push_stack(stack_t **stack, int n)
  */
 void pop_stack(stack_t **stack, unsigned int lineno)
 {
-	stack_t *node;
+	stack_t *next, *node;
 
 	node = *stack;
-	if (node != NULL && node->next != NULL)
-	{
-		node = node->next;
-		*stack = node;
-	}
-	else if (node != NULL && node->next == NULL)
-	{
-		*stack = NULL;
-	}
-	else
+	if (node == NULL)
 		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pop");
+	else
+	{
+		next = node->next;
+		free(node);
+		*stack = next;
+	}
 }
 
 /**

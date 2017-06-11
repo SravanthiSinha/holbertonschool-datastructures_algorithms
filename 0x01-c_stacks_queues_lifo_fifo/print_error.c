@@ -30,5 +30,6 @@ void print_error(int errorcode, int lineno, char *opcode)
 			}
 		}
 	}
+	free_stack(stack);
 	exit(EXIT_FAILURE);
 }
