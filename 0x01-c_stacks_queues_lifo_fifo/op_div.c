@@ -21,12 +21,15 @@ void divide(stack_t **head, unsigned int lineno)
 		}
 		exit(EXIT_FAILURE);
 	}
+	if ((*head)->n == 0)
+	{
+		print_error(MONTY_ERROR_DIV_BY_ZERO, lineno, NULL);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
 	tmp = *head;
 	*head = (*head)->next;
 	(*head)->prev = NULL;
-	if ((*head)->n  != 0)
-		(*head)->n /= tmp->n;
-	else
-		print_error(MONTY_ERROR_DIV_BY_ZERO, lineno, NULL);
+	(*head)->n /= tmp->n;
 	free(tmp);
 }
