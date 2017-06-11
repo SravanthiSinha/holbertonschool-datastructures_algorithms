@@ -1,6 +1,4 @@
 #include "monty.h"
-
-stack_t *stack = NULL;
 /**
  * main - Starts the program
  * @argc : no of command line arguments
@@ -8,7 +6,7 @@ stack_t *stack = NULL;
  *
  * Return: on success - EXIT_SUCCESS, on failure - EXIT_FAILURE
  */
-int main(int argc, __attribute__((unused)) char **argv)
+int main(int argc, char **argv)
 {
 	FILE *fp;
 	int exit_value;

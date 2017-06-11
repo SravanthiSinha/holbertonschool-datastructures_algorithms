@@ -60,7 +60,7 @@ void pop_stack(stack_t **stack, unsigned int lineno);
 
 void print_error(int errcode, int lineno, char *opcode);
 int monty_parse(FILE *fp);
-int monty_execute(char **tokens, unsigned int lineno);
+int monty_execute(stack_t **stack, char **tokens, unsigned int lineno);
 int isnum(char *str);
 extern stack_t *stack;
 #endif

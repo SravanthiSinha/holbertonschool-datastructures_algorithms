@@ -29,25 +29,25 @@ void parse(char *line, char **tokens)
 int monty_parse(FILE *fp)
 {
 	char *line;
-	ssize_t read;
 	size_t len;
 	unsigned int lineno;
 	char *tokens[3] = {NULL, NULL, NULL};
 	int exit_value;
+	stack_t *stack;
 
+	stack = NULL;
 	exit_value  = 1;
 	lineno = 0;
 	len = 0;
-	read = 0;
 	line = NULL;
-	while (((read = getline(&line, &len, fp)) != -1) && exit_value)
+	while ((getline(&line, &len, fp) != -1) && exit_value)
 	{
 		lineno++;
 		strstrip(line); /* strip the empty lines*/
 		if (strlen(line))
 		{
 			parse(line, tokens);
-			exit_value = monty_execute(tokens, lineno);
+			exit_value = monty_execute(&stack, tokens, lineno);
 		}
 	}
 	free_stack(stack);
