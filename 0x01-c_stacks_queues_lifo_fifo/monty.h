@@ -33,7 +33,7 @@ void (*get_op_func(char *c))(stack_t **stack, unsigned int line_number);
 
 
 void print_error(int errcode, int lineno, char *opcode);
-void monty_parse(FILE *fp);
+int monty_parse(FILE *fp);
 int monty_execute(char **tokens, unsigned int lineno);
 int isnum(char *str);
 extern stack_t *stack;

@@ -24,8 +24,9 @@ void parse(char *line, char **tokens)
  * monty_parse - parses the input file
  * @fp : The file for which the stack has to be built
  *
+ * Return: On success - operand, on failure 0
  */
-void monty_parse(FILE *fp)
+int monty_parse(FILE *fp)
 {
 	char *line;
 	ssize_t read;
@@ -53,4 +54,5 @@ void monty_parse(FILE *fp)
 	free_stack(stack);
 	if (line)
 		free(line);
+		return (exit_value);
 }

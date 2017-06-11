@@ -11,7 +11,9 @@ stack_t *stack = NULL;
 int main(int argc, __attribute__((unused)) char **argv)
 {
 	FILE *fp;
+	int exit_value;
 
+	exit_value = EXIT_FAILURE;
 	if (argc != 2)
 		printf("USAGE: monty file\n");
 	else
@@ -21,10 +23,9 @@ int main(int argc, __attribute__((unused)) char **argv)
 				printf("Error: Can't open file %s\n", argv[1]);
 			else
 			{
-					monty_parse(fp);
+					exit_value = (monty_parse(fp) == 1 ? EXIT_SUCCESS : EXIT_FAILURE);
 					fclose(fp);
-					return (EXIT_SUCCESS);
 			}
 		}
-	return (EXIT_FAILURE);
+	return (exit_value);
 }
