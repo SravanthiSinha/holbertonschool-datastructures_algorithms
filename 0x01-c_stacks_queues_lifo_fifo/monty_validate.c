@@ -60,7 +60,6 @@ int monty_validate(char *line, unsigned int lineno)
 				return (1);
 		}
 	}
-	free(opcode);
 	free(line);
 	print_error(MONTY_ERROR_UNKNOWN_INSTR, lineno, opcode);
 	return (0);
