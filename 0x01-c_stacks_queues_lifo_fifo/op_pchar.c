@@ -16,7 +16,7 @@ void pchar(stack_t **stack, unsigned int lineno)
 			printf("%c\n", node->n);
 		else
 		{
-			print_error(MONTY_ERROR_OUT_OF_RANGE, lineno, NULL);
+			print_error(MONTY_ERROR_OUT_OF_RANGE, lineno, "pchar");
 			exit(EXIT_FAILURE);
 		}
 	}
