@@ -63,6 +63,7 @@ void sub(stack_t **stack, unsigned int lineno);
 void divide(stack_t **stack, unsigned int lineno);
 void mul(stack_t **stack, unsigned int lineno);
 void mod(stack_t **stack, unsigned int lineno);
+void pchar(stack_t **stack, unsigned int lineno);
 
 
 void print_error(int errcode, int lineno, char *opcode);
