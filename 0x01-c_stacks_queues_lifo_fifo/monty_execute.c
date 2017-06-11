@@ -15,6 +15,7 @@ int monty_execute(stack_t **stack, char **tokens, unsigned int lineno)
 		{ "pint", &print_stack_top },
 		{ "pop", &pop_stack },
 		{ "swap", &swap_tops },
+		{ "add", &add },
 		{ NULL, NULL }
 	};
 	int i;

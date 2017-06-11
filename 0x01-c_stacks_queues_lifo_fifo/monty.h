@@ -58,6 +58,7 @@ void free_stack(stack_t *stack);
 void print_stack_top(stack_t **stack, unsigned int lineno);
 void pop_stack(stack_t **stack, unsigned int lineno);
 void swap_tops(stack_t **stack, unsigned int lineno);
+void add(stack_t **stack, unsigned int lineno);
 
 
 void print_error(int errcode, int lineno, char *opcode);
