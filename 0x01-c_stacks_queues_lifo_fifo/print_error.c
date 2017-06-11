@@ -9,9 +9,6 @@
 
 void print_error(int errorcode, int lineno, char *opcode)
 {
-	int i;
-	char *error_msg[3] = {"usage: push integer", "can't pint, stack empty",
-			      "division by zero"};
 
 	if (errorcode == MONTY_ERROR_MALLOC)
 		printf("Error: malloc failed\n");
@@ -19,17 +16,13 @@ void print_error(int errorcode, int lineno, char *opcode)
 		printf("L%d: unknown instruction %s\n", lineno, opcode);
 	else if (errorcode == MONTY_ERROR_STACK_SHORT)
 		printf("L%d: can't %s, stack too short\n", lineno, opcode);
-	else
-	{
-		for (i = 5; i < 8; i++)
-		{
-			if (i == errorcode)
-			{
-				printf("L%d: %s\n", lineno, error_msg[i - 5]);
-				break;
-			}
-		}
-	}
+	else if (errorcode == MONTY_ERROR_INT)
+		printf("L%d: usage: push integer\n", lineno);
+	else if (errorcode == MONTY_ERROR_STACK_EMPTY)
+		printf("L%d: can't pint, stack empty\n", lineno);
+	else if (errorcode == MONTY_ERROR_DIV_BY_ZERO)
+		printf("L%d: division by zero\n", lineno);
+
 	free_stack(stack);
 	exit(EXIT_FAILURE);
 }
