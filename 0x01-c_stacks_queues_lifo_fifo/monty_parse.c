@@ -12,11 +12,11 @@ void parse(char *line, char **tokens)
 	int i;
 	char *token;
 
-	token = strtok(line, "\n ");
+	token = strtok(line, " \t\r\n\v\f");
 	for (i = 0; token && i < 2; i++)
 	{
 		tokens[i] = token;
-		token = strtok(NULL, "\n ");
+		token = strtok(NULL, " \t\r\n\v\f");
 	}
 	tokens[i] = NULL;
 }
