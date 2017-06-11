@@ -22,7 +22,4 @@ void print_error(int errorcode, int lineno, char *opcode)
 		printf("L%d: can't pint, stack empty\n", lineno);
 	else if (errorcode == MONTY_ERROR_DIV_BY_ZERO)
 		printf("L%d: division by zero\n", lineno);
-
-	free_stack(stack);
-	exit(EXIT_FAILURE);
 }

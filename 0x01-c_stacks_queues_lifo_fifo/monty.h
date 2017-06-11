@@ -23,7 +23,7 @@ int check_element_int(char *line);
 char *strstrip(char *s);
 
 int push_stack(stack_t **stack, int n);
-void print_stack(stack_t *stack);
+void print_stack(stack_t **stack, unsigned int lineno);
 void free_stack(stack_t *stack);
 void print_stack_top(stack_t **stack, unsigned int lineno);
 void pop_stack(stack_t **stack, unsigned int lineno);
@@ -34,7 +34,7 @@ void (*get_op_func(char *c))(stack_t **stack, unsigned int line_number);
 
 void print_error(int errcode, int lineno, char *opcode);
 void monty_parse(FILE *fp);
-int monty_validate(char *line,  unsigned int lineno);
-void monty_execute(char *line, unsigned int lineno);
+int monty_execute(char **tokens, unsigned int lineno);
+int isnum(char *str);
 extern stack_t *stack;
 #endif

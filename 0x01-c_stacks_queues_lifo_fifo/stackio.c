@@ -27,7 +27,7 @@ int push_stack(stack_t **stack, int n)
 		return (1);
 	}
 	print_error(MONTY_ERROR_MALLOC, 0, NULL);
-	return (0);
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -53,14 +53,15 @@ void pop_stack(stack_t **stack, unsigned int lineno)
 /**
  * print_stack - Prints  the stack
  * @stack : stack to be printed
+ * @lineno : line no of the instruction
  *
  * Return: void
  */
-void print_stack(stack_t *stack)
+void print_stack(stack_t **stack, __attribute__((unused)) unsigned int lineno)
 {
 	stack_t *node;
 
-	node = stack;
+	node = *stack;
 	while (node != NULL)
 	{
 		printf("%d\n", node->n);
