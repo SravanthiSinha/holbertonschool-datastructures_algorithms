@@ -46,8 +46,13 @@ int monty_parse(FILE *fp)
 		strstrip(line); /* strip the empty lines*/
 		if (strlen(line))
 		{
-			parse(line, tokens);
-			exit_value = monty_execute(&stack, tokens, lineno);
+			if (line[0] == '#')
+				lineno++;
+			else
+			{
+				parse(line, tokens);
+				exit_value = monty_execute(&stack, tokens, lineno);
+			}
 		}
 	}
 	free_stack(stack);
