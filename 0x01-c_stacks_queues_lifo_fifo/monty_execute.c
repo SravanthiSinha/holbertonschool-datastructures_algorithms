@@ -12,8 +12,9 @@ int monty_execute(stack_t **stack, char **tokens, unsigned int lineno)
 {
 	instruction_t fun[] = {
 		{ "pall", &print_stack },
-		{ "pint", &print_stack_top},
+		{ "pint", &print_stack_top },
 		{ "pop", &pop_stack },
+		{ "swap", &swap_tops },
 		{ NULL, NULL }
 	};
 	int i;
