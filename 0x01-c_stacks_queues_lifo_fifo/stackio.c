@@ -41,7 +41,10 @@ void pop_stack(stack_t **stack, unsigned int lineno)
 
 	node = *stack;
 	if (node == NULL)
+	{
 		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pop");
+		exit(EXIT_FAILURE);
+	}
 	else
 	{
 		next = node->next;
@@ -82,7 +85,10 @@ void print_stack_top(stack_t **stack, unsigned int lineno)
 	if (node != NULL)
 		printf("%d\n", node->n);
 	else
+	{
 		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pint");
+		exit(EXIT_FAILURE);
+	}
 }
 
 /**
