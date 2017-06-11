@@ -18,6 +18,7 @@ int monty_execute(stack_t **stack, char **tokens, unsigned int lineno)
 		{ "add", &add },
 		{ "sub", &sub },
 		{ "div", &divide },
+		{ "mul", &mul },
 		{ NULL, NULL }
 	};
 	int i;
