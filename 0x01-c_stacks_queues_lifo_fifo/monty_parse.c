@@ -1,5 +1,6 @@
 #include "monty.h"
 
+int flag = 0;
 /**
  * parse - checks line from file for a single command and argument.
  * @line: A line from file.
@@ -28,18 +29,13 @@ void parse(char *line, char **tokens)
  */
 int monty_parse(FILE *fp)
 {
-	char *line;
-	size_t len;
-	unsigned int lineno;
+	char *line = NULL;
+	size_t len = 0;
+	unsigned int lineno = 0;
 	char *tokens[3] = {NULL, NULL, NULL};
-	int exit_value;
-	stack_t *stack;
+	int exit_value = 1;
+	stack_t *stack = NULL;
 
-	stack = NULL;
-	exit_value  = 1;
-	lineno = 0;
-	len = 0;
-	line = NULL;
 	while ((getline(&line, &len, fp) != -1) && exit_value)
 	{
 		lineno++;
@@ -50,7 +46,9 @@ int monty_parse(FILE *fp)
 			if (tokens[0] && tokens[0][0] == '#')
 				lineno++;
 			else
+				{
 				exit_value = monty_execute(&stack, tokens, lineno);
+			}
 		}
 	}
 	free_stack(stack);

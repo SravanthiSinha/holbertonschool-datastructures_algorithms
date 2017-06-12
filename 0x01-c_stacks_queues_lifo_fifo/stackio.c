@@ -9,55 +9,77 @@
  * Return: on malloc Failure: exits with EXIT_FAILURE
  * on sucess returns 1, on failure returns 0
  */
-int push_stack(stack_t **stack, char *n, int lineno)
+void push_stack(stack_t **stack, char *n, int lineno)
 {
-	stack_t *temp;
-	stack_t *head;
-
 	if (!n || isnum(n) == 0)
 	{
 		print_error(MONTY_ERROR_INT, lineno, NULL);
 		exit(EXIT_FAILURE);
 	}
 
-	head = *stack;
-	temp = malloc(sizeof(stack_t));
+	flag == 0 ?  add_front(stack, atoi(n)) : add_end(stack, atoi(n));
 
-	if (temp != NULL)
+}
+/**
+* add_front - add a new node in the begining of stack_t list.
+* @head: pointer to head pointer of the list
+* @data: new node data
+* Return: address of new node
+**/
+stack_t *add_front(stack_t **head, int data)
+{
+	stack_t *new;
+
+	new = malloc(sizeof(stack_t));
+	if (new == NULL)
 	{
-		temp->n = atoi(n);
-		temp->prev = NULL;
-		temp->next = head;
-		if (head != NULL)
-			head->prev = temp;
-		*stack = temp;
-		return (1);
+		printf("Error: malloc failed\n");
+		free_stack(*head);
+		exit(EXIT_FAILURE);
 	}
-	print_error(MONTY_ERROR_MALLOC, 0, NULL);
-	exit(EXIT_FAILURE);
+	new->n = data;
+	new->prev = NULL;
+	new->next = *head;
+	*head = new;
+	return (new);
 }
 
 /**
- * pop_stack - Pops/ deletes the top  elementof stack
- * @stack : stack to be used
- * @lineno : line no of the instruction
- */
-void pop_stack(stack_t **stack, unsigned int lineno)
+* add_end - add a new node in the end of stack_t list.
+* @head: pointer to head pointer of the list
+* @data: new node data
+* Return: address of new node
+**/
+stack_t *add_end(stack_t **head, int data)
 {
-	stack_t *next, *node;
+	stack_t *new, *tmp;
 
-	node = *stack;
-	if (node == NULL)
+	new = malloc(sizeof(stack_t));
+	if (new == NULL)
 	{
-		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pop");
+		printf("Error: malloc failed\n");
+		free_stack(*head);
 		exit(EXIT_FAILURE);
+	}
+	new->n = data;
+	new->prev = NULL;
+	new->next = NULL;
+	if (!(*head))
+		*head = new;
+	else if (!(*head)->next)
+	{
+		(*head)->next = new;
+		new->prev = *head;
 	}
 	else
 	{
-		next = node->next;
-		free(node);
-		*stack = next;
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+		new->prev = tmp;
 	}
+	return (new);
 }
 
 /**
@@ -76,25 +98,6 @@ void print_stack(stack_t **stack, __attribute__((unused)) unsigned int lineno)
 	{
 		printf("%d\n", node->n);
 		node = node->next;
-	}
-}
-
-/**
- * print_stack_top - Prints  the top of stack
- * @stack : stack to be printed
- * @lineno : line no of the instruction
- */
-void print_stack_top(stack_t **stack, unsigned int lineno)
-{
-	stack_t *node;
-
-	node = *stack;
-	if (node != NULL)
-		printf("%d\n", node->n);
-	else
-	{
-		print_error(MONTY_ERROR_STACK_EMPTY, lineno, "pint");
-		exit(EXIT_FAILURE);
 	}
 }
 

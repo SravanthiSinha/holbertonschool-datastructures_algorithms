@@ -52,7 +52,9 @@ typedef struct instruction_s
 int check_element_int(char *line);
 char *strstrip(char *s);
 
-int push_stack(stack_t **stack, char *n, int lineno);
+void op_stack(stack_t **stack, stack_t *new_node);
+void op_queue(stack_t **queue, stack_t *new_node);
+void push_stack(stack_t **stack, char *n, int lineno);
 void print_stack(stack_t **stack, unsigned int lineno);
 void free_stack(stack_t *stack);
 void print_stack_top(stack_t **stack, unsigned int lineno);
@@ -67,11 +69,14 @@ void pchar(stack_t **stack, unsigned int lineno);
 void pstr(stack_t **stack, unsigned int lineno);
 void rotl(stack_t **stack, unsigned int lineno);
 void rotr(stack_t **stack, unsigned int lineno);
-
+stack_t *add_end(stack_t **head, int data);
+stack_t *add_front(stack_t **head, int data);
 
 void print_error(int errcode, int lineno, char *opcode);
 int monty_parse(FILE *fp);
 int monty_execute(stack_t **stack, char **tokens, unsigned int lineno);
 int isnum(char *str);
 extern stack_t *stack;
+
+extern int flag;
 #endif
