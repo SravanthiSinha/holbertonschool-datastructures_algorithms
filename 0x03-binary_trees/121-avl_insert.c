@@ -1,54 +1,6 @@
 #include "binary_trees.h"
 
 /**
-* getHeight - measures the height of a binary tree
-* @tree: pointer to the root node of the tree to measure the height of
-* Return: height or 0 if root or its children is NULL
-**/
-size_t getHeight(const binary_tree_t *tree)
-{
-	size_t left, right;
-
-	if (!tree)
-		return (0);
-	if (!tree->left && !tree->right)
-		return (0);
-	left = getHeight(tree->left);
-	right = getHeight(tree->right);
-	if (left > right)
-		return (left + 1);
-	else
-		return (right + 1);
-
-}
-
-
-/**
- * getBalace -  a function  that measures the balance factor
- * of a binary tree
- * @node : a pointer to the node to check
- * Return: 1 if node is a root, and 0 otherwise
- */
-int getBalace(const binary_tree_t *node)
-{
-	int left_height = 0, right_height = 0;
-
-	if (node)
-	{
-		if (node->left)
-		{
-			left_height = getHeight(node->left) + 1;
-		}
-		if (node->right)
-		{
-			right_height = getHeight(node->right) + 1;
-		}
-	}
-	return (left_height - right_height);
-}
-
-
-/**
  * bst_insert -  a function that inserts a value in a Binary Search Tree
  * @tree : a double pointer to the root node of the BST to insert the value in
  * @value: the value to store in the node to be inserted
@@ -116,34 +68,35 @@ bst_t *bst_insert(bst_t **tree, int value)
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
-	avl_t *node, *new_node;
+	avl_t *parent, *new_node;
 	int balance;
 
 	new_node = bst_insert(tree, value);
-	node = new_node;
-	if (node->parent && node->parent->parent)
-		node = node->parent->parent;
-	if (node)
+	if (!new_node)
+		return (NULL);
+	parent = new_node->parent;/* already in tree */
+	while (parent)
 	{
-		balance = binary_tree_balance(node);
+		balance = binary_tree_balance(parent);
 		/* Left Left Case */
-		if (balance > 1 && node->left && value < node->left->n)
-			binary_tree_rotate_right(node);
+		if (balance > 1 && parent->left && value < parent->left->n)
+			parent = binary_tree_rotate_right(parent);
 		/* Right Right Case */
-		else if (balance < -1 && value > node->right->n)
-			binary_tree_rotate_left(node);
+		else if (balance < -1 && value > parent->right->n)
+			parent = binary_tree_rotate_left(parent);
 		/* Left Right Case*/
-		else if (balance > 1 && value > node->left->n)
+		else if (balance > 1 && value > parent->left->n)
 		{
-			node->left =  binary_tree_rotate_left(node->left);
-			binary_tree_rotate_right(node);
+			parent->left =  binary_tree_rotate_left(parent->left);
+			parent = binary_tree_rotate_right(parent);
 		}
 		/* Right Left Case */
-		else if (balance < -1 && value < node->right->n)
+		else if (balance < -1 && value < parent->right->n)
 		{
-			node->right = binary_tree_rotate_right(node->right);
-			binary_tree_rotate_left(node);
+			parent->right = binary_tree_rotate_right(parent->right);
+			parent = binary_tree_rotate_left(parent);
 		}
+		parent = parent->parent;
 	}
 	return (new_node);
 }
