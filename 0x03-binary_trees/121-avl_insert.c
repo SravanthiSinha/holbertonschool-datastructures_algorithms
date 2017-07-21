@@ -68,35 +68,39 @@ bst_t *bst_insert(bst_t **tree, int value)
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
-	avl_t *parent, *new_node;
+	avl_t *node, *new_node;
 	int balance;
 
 	new_node = bst_insert(tree, value);
 	if (!new_node)
 		return (NULL);
-	parent = new_node->parent;/* already in tree */
-	while (parent)
+	node = new_node->parent;/* already in tree */
+	while (node)
 	{
-		balance = binary_tree_balance(parent);
+		balance = binary_tree_balance(node);
 		/* Left Left Case */
-		if (balance > 1 && parent->left && value < parent->left->n)
-			parent = binary_tree_rotate_right(parent);
-		/* Right Right Case */
-		else if (balance < -1 && value > parent->right->n)
-			parent = binary_tree_rotate_left(parent);
-		/* Left Right Case*/
-		else if (balance > 1 && value > parent->left->n)
+		if (balance > 1 && node->left && value < node->left->n)
 		{
-			parent->left =  binary_tree_rotate_left(parent->left);
-			parent = binary_tree_rotate_right(parent);
+			node = binary_tree_rotate_right(node);
+		}
+		/* Right Right Case */
+		else if (balance < -1 && value > node->right->n)
+			node = binary_tree_rotate_left(node);
+		/* Left Right Case*/
+		else if (balance > 1 && value > node->left->n)
+		{
+			node->left =  binary_tree_rotate_left(node->left);
+			node = binary_tree_rotate_right(node);
 		}
 		/* Right Left Case */
-		else if (balance < -1 && value < parent->right->n)
+		else if (balance < -1 && value < node->right->n)
 		{
-			parent->right = binary_tree_rotate_right(parent->right);
-			parent = binary_tree_rotate_left(parent);
+			node->right = binary_tree_rotate_right(node->right);
+			node = binary_tree_rotate_left(node);
 		}
-		parent = parent->parent;
+		*tree = node;
+		node = node->parent;
 	}
+
 	return (new_node);
 }
