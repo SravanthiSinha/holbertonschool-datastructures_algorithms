@@ -128,23 +128,21 @@ avl_t *avl_insert(avl_t **tree, int value)
 		balance = binary_tree_balance(node);
 		/* Left Left Case */
 		if (balance > 1 && node->left && value < node->left->n)
-		{
-			return (binary_tree_rotate_right(node));
-		}
+			binary_tree_rotate_right(node);
 		/* Right Right Case */
 		else if (balance < -1 && value > node->right->n)
-			return (binary_tree_rotate_left(node));
+			binary_tree_rotate_left(node);
 		/* Left Right Case*/
 		else if (balance > 1 && value > node->left->n)
 		{
 			node->left =  binary_tree_rotate_left(node->left);
-			return (binary_tree_rotate_right(node));
+			binary_tree_rotate_right(node);
 		}
 		/* Right Left Case */
 		else if (balance < -1 && value < node->right->n)
 		{
 			node->right = binary_tree_rotate_right(node->right);
-			return (binary_tree_rotate_left(node));
+			binary_tree_rotate_left(node);
 		}
 	}
 	return (new_node);
