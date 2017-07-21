@@ -19,14 +19,13 @@ size_t height(const binary_tree_t *tree)
 		return (left + 1);
 	else
 		return (right + 1);
-
 }
 
 
 /**
 * is_balanced - checks if a given bst is balanced or not
 * @tree: pointer to the root node of the tree to check
-* Return: 1 if balanced, 0 otherwise
+* Return: 1 if AVL, 0 otherwise
 **/
 int is_balanced(const binary_tree_t *tree)
 {
