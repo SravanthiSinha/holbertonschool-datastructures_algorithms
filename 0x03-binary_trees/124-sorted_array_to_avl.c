@@ -20,10 +20,13 @@ avl_t *sortedArrayToBST(avl_t *root, int arr[], int start, int end)
 	mid = (start + end) / 2;
 	node = binary_tree_node(root, arr[mid]);
 
-	/* Recursively construct the left subtree and make it left child of root */
-	node->left = sortedArrayToBST(node, arr, start, mid - 1);
-	/* Recursively construct the right subtree and make it right child of root */
-	node->right = sortedArrayToBST(node, arr, mid + 1, end);
+	if (node)
+	{
+		/* Recursively construct the left subtree and make it left child of root */
+		node->left = sortedArrayToBST(node, arr, start, mid - 1);
+		/* Recursively construct the right subtree and make it right child of root */
+		node->right = sortedArrayToBST(node, arr, mid + 1, end);
+	}
 	return (node);
 }
 
