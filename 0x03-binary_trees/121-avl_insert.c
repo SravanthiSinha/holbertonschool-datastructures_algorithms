@@ -1,58 +1,5 @@
 #include "binary_trees.h"
 
-
-/* resource: http://cs.lmu.edu/~ray/notes/binarysearchtrees/ */
-/**
-* Rotate -  a function that performs a left/right-rotation
-* on a binary tree
-* @tree: a pointer to the root node of the tree to rotate
-* @dir :left or right , dir = 0 -> left, dir = 1->right
-* Return: a pointer to the new root node of the tree once rotated
-**/
-binary_tree_t *Rotate(binary_tree_t *tree, int dir)
-{
-	binary_tree_t *node, *node2, *node3;
-
-	if (!tree)
-		return (NULL);
-	if (tree->right && dir == 0)
-	{
-		node = tree;
-		node2 = tree->right;
-		if (node->parent->n < node->n)
-			node->parent->right = node2;
-		if (node->parent->n > node->n)
-			node->parent->left = node2;
-		node3 = tree->right->left;
-		node2->parent = node->parent;
-		node2->left = node;
-		node->parent = node2;
-		node->right = node3;
-		if (node3)
-			node3->parent = node;
-		tree = node2;
-	}
-	if (tree->left && dir == 1)
-	{
-		node = tree;
-		node2 = tree->left;
-		if (node->parent->n < node->n)
-			node->parent->right = node2;
-		if (node->parent->n > node->n)
-			node->parent->left = node2;
-		node3 = tree->left->right;
-		node2->parent = node->parent;
-		node2->right = node;
-		node->parent = node2;
-		node->left = node3;
-		if (node3)
-			node3->parent = node;
-		tree = node2;
-	}
-	return (tree);
-}
-
-
 /**
 * getHeight - measures the height of a binary tree
 * @tree: pointer to the root node of the tree to measure the height of
@@ -182,22 +129,22 @@ avl_t *avl_insert(avl_t **tree, int value)
 		/* Left Left Case */
 		if (balance > 1 && node->left && value < node->left->n)
 		{
-			return (Rotate(node, 1));
+			return (binary_tree_rotate_right(node));
 		}
 		/* Right Right Case */
 		else if (balance < -1 && value > node->right->n)
-			return (Rotate(node, 0));
+			return (binary_tree_rotate_left(node));
 		/* Left Right Case*/
 		else if (balance > 1 && value > node->left->n)
 		{
-			node->left =  Rotate(node->left, 0);
-			return (Rotate(node, 1));
+			node->left =  binary_tree_rotate_left(node->left);
+			return (binary_tree_rotate_right(node));
 		}
 		/* Right Left Case */
 		else if (balance < -1 && value < node->right->n)
 		{
-			node->right = Rotate(node->right,  1);
-			return (Rotate(node, -1));
+			node->right = binary_tree_rotate_right(node->right);
+			return (binary_tree_rotate_left(node));
 		}
 	}
 	return (new_node);
