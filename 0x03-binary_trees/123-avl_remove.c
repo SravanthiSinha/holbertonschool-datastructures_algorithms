@@ -148,5 +148,5 @@ avl_t *avl_remove(avl_t *root, int value)
 		root = node;
 		node = node->parent;
 	}
-	return (new_node);
+	return (root);
 }
