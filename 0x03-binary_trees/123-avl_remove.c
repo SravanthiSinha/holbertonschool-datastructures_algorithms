@@ -86,6 +86,25 @@ bst_t *bst_remove(bst_t *root, int value)
 	return (root);
 }
 
+
+/*
+ * Implememntation details:
+ * 1) Perform the normal BST deletion.
+ * 2) The current node must be one of the ancestors of the deleted node.
+ * Update the height of the current node.
+ * 3) Get the balance factor of the current node.
+ * 4) If balance factor is greater than 1, then the current node is unbalanced
+ * and we are either in Left Left case or Left Right case. To check whether it
+ * is Left Left case or Left Right case, get the balance factor of left subtree
+ * If balance factor of the left subtree is greater than or equal to 0, then it
+ * is Left Left case, else Left Right case.
+ * 5) If balance factor is less than -1, then the current node is unbalanced &
+ * we are either in Right Right case or Right Left case. To check whether it is
+ * Right Right case or Right Left case, get the balance factor of right subtree
+ * If the balance factor of the right subtree is smaller than or equal to 0,
+ * then it is Right Right case, else Right Left case
+ */
+
 /**
  * avl_remove -  a function that removes a node from a AVL  Tree
  * @root : a pointer to the root node of the tree to remove a node of
@@ -126,6 +145,7 @@ avl_t *avl_remove(avl_t *root, int value)
 			node->right = binary_tree_rotate_right(node->right);
 			node = binary_tree_rotate_left(node);
 		}
+		root = node;
 		node = node->parent;
 	}
 	return (new_node);
