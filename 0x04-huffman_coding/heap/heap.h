@@ -2,6 +2,8 @@
 #define _HEAP_H_
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 /**
  * struct binary_tree_node_s - Binary tree node data structure
@@ -33,6 +35,18 @@ typedef struct heap_s
 	binary_tree_node_t *root;
 } heap_t;
 
+/**
+ * enum dir - directions
+ * @left: left
+ * @right: right
+ */
+enum dir
+{
+	left,
+	right
+};
+
 heap_t *heap_create(int (*data_cmp)(void *, void *));
 binary_tree_node_t *binary_tree_node(binary_tree_node_t *parent, void *data);
+binary_tree_node_t *heap_insert(heap_t *heap, void *data);
 #endif
