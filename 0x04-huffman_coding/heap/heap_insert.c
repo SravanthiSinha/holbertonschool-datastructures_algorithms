@@ -5,12 +5,12 @@
  * @a: integer to be converted
  * Return: binary string of an integer
  */
-char *int2bin(int a)
+static char *int2bin(int a)
 {
 	char *str, *tmp;
 	int cnt = 31;
 
-	str = (char *)malloc(33);
+	str = (char *)calloc(1, 33);
 	tmp = str;
 	while (cnt > -1)
 	{
@@ -32,41 +32,22 @@ char *int2bin(int a)
 }
 
 /**
- * strrev - reverse a string
- * @str: string to be reversed
- * Return: reversed string
- */
-char *strrev(char *str)
-{
-	char *p1, *p2;
-
-	if (!str || !*str)
-		return (str);
-	for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2)
-	{
-		*p1 ^= *p2;
-		*p2 ^= *p1;
-		*p1 ^= *p2;
-	}
-	return (str);
-}
-
-/**
- * get_bottom_node - A function that fetches the bottom node of a tree
+ * get_bottom_node - A function that creates and returns the bottom
+ * node of a heap
  * @heap:  A pointer to the heap where the node has to inserted
  * @data : data to be inserted
  * Return: A pointer to the bottom node
  */
-binary_tree_node_t *get_bottom_node(heap_t *heap, void *data)
+static binary_tree_node_t *get_bottom_node(heap_t *heap, void *data)
 {
 	binary_tree_node_t *temp, *parent, *node;
 	int l = 0, r = 0, pos, len, i = 0;
-	char *bin = int2bin((int)heap->size + 1);
-	char *e = strchr(bin, '1');
+	char *bin = NULL, *bin_str = int2bin((int)heap->size + 1);
+	char *e = strchr(bin_str, '1');
 
-	/* get the MSB index*/
-	pos = (int)(e - bin);
-	bin = bin + pos + 1;
+	/* get the MSB index */
+	pos = (int)(e - bin_str);
+	bin = strdup(bin_str + pos + 1);
 	temp = heap->root;
 	parent = heap->root;
 	len = strlen(bin);
@@ -86,6 +67,8 @@ binary_tree_node_t *get_bottom_node(heap_t *heap, void *data)
 		}
 		i++;
 	}
+	free(bin);
+	free(bin_str);
 	node = binary_tree_node(parent, data);
 	if (l > r)
 		parent->left = node;
@@ -96,13 +79,27 @@ binary_tree_node_t *get_bottom_node(heap_t *heap, void *data)
 }
 
 /**
- * swap - swap intger pointers
+ * swap_int - swap intger pointers
  * @a: first no
  * @b: sec no
  */
-void swap(int *a, int *b)
+static void swap_int(int *a, int *b)
 {
 	int c;
+
+	c = *a;
+	*a = *b;
+	*b = c;
+}
+
+/**
+ * swap - swap  pointers
+ * @a: first
+ * @b: sec
+ */
+static void swap(void **a, void **b)
+{
+	void *c;
 
 	c = *a;
 	*a = *b;
@@ -114,15 +111,19 @@ void swap(int *a, int *b)
  * @heap: A pointer to the heap to be ordered
  * @node: newly added node
  */
-void adjust_heap(heap_t *heap, binary_tree_node_t *node)
+static void adjust_heap(heap_t *heap, binary_tree_node_t *node)
 {
 	binary_tree_node_t *temp;
 
 	temp = node;
-	while (temp->parent
-	       && heap->data_cmp(temp->data, temp->parent->data) < 0)
+	while (temp->parent)
 	{
-		swap(temp->data, temp->parent->data);
+		if (temp->data == NULL)
+			swap(&temp->data, &temp->parent->data);
+		else if (temp->parent->data && heap->data_cmp(temp->data,
+							      temp->parent->
+							      data) < 0)
+			swap_int(temp->data, temp->parent->data);
 		temp = temp->parent;
 	}
 }
@@ -137,7 +138,7 @@ binary_tree_node_t *heap_insert(heap_t *heap, void *data)
 {
 	binary_tree_node_t *node = NULL;
 
-	if (heap == NULL || data == NULL)
+	if (heap == NULL)
 		return (NULL);
 	if (heap->root == NULL)
 	{
@@ -151,6 +152,8 @@ binary_tree_node_t *heap_insert(heap_t *heap, void *data)
 	if (node != NULL)
 	{
 		heap->size += 1;
+		if (heap->data_cmp == NULL)
+			return (NULL);
 		adjust_heap(heap, node);
 	}
 	return (node);

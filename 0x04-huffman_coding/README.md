@@ -66,6 +66,29 @@ Heap size: 8
 $
 ```
 
+* 3) Min Binary Heap - Extract
+
+heap/heap_extract.c - Contains a function that extracts the root value of a Min Binary Heap
+
+```
+$ gcc -Wall -Wextra -Werror -pedantic -Iheap/ -I./ heap/*.c 3-main.c binary_tree_print.c -o heap_extract
+$ ./heap_extract
+Heap size: 0
+Heap root: (nil)
+                 .------------(001)-------.
+       .-------(002)-------.         .--(028)--.
+  .--(011)--.         .--(003)     (076)     (033)
+(045)     (023)     (034)
+Heap size: 10
+
+Extracted: 1
+                 .-------(002)-------.
+       .-------(003)--.         .--(028)--.
+  .--(011)--.       (034)     (076)     (033)
+(045)     (023)
+Heap size: 9
+$
+```
 ### Usefull Resources:
 * [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap)
 * [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding)

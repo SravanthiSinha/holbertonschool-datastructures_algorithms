@@ -40,7 +40,7 @@ int print_int(char *buffer, void *data)
 	return (length);
 }
 
-void binary_tree_print(const binary_tree_node_t *root,
+void binary_tree_print(const binary_tree_node_t *heap,
 		       int (*print_data)(char *, void *));
 
 /**
@@ -53,11 +53,12 @@ int main(void)
 	heap_t *heap;
 
 	int array[] = {
-	  34, 2, 45, 23, 76, 48, 98, 47
+		34, 28, 2, 45, 23, 76, 33, 3, 11, 1
 	};
 	size_t size = sizeof(array) / sizeof(array[0]);
 	size_t i;
 	binary_tree_node_t *node;
+	int *extracted;
 
 	heap = heap_create(int_cmp);
 	if (heap == NULL)
@@ -77,17 +78,15 @@ int main(void)
 			return (EXIT_FAILURE);
 		}
 		if (i % 4 == 0)
-		{
 			node = heap_insert(heap, NULL);
-			if (node == NULL)
-			{
-				fprintf(stderr, "Failed to insert a node\n");
-				return (EXIT_FAILURE);
-			}
-		}
-		binary_tree_print(heap->root, print_int);
-		printf("\n");
 	}
+	binary_tree_print(heap->root, print_int);
+	printf("Heap size: %lu\n\n", heap->size);
+
+	extracted = (int *)heap_extract(heap);
+	if (extracted)
+		printf("Extracted: %d\n", *extracted);
+	binary_tree_print(heap->root, print_int);
 	printf("Heap size: %lu\n", heap->size);
 	return (EXIT_SUCCESS);
 }
