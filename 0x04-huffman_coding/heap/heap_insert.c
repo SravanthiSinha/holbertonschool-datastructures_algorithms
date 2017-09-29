@@ -79,20 +79,6 @@ static binary_tree_node_t *get_bottom_node(heap_t *heap, void *data)
 }
 
 /**
- * swap_int - swap intger pointers
- * @a: first no
- * @b: sec no
- */
-static void swap_int(int *a, int *b)
-{
-	int c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
-}
-
-/**
  * swap - swap  pointers
  * @a: first
  * @b: sec
@@ -123,7 +109,7 @@ static void adjust_heap(heap_t *heap, binary_tree_node_t *node)
 		else if (temp->parent->data && heap->data_cmp(temp->data,
 							      temp->parent->
 							      data) < 0)
-			swap_int(temp->data, temp->parent->data);
+			swap(&temp->data, &temp->parent->data);
 		temp = temp->parent;
 	}
 }
@@ -152,9 +138,8 @@ binary_tree_node_t *heap_insert(heap_t *heap, void *data)
 	if (node != NULL)
 	{
 		heap->size += 1;
-		if (heap->data_cmp == NULL)
-			return (NULL);
-		adjust_heap(heap, node);
+		if (heap->data_cmp != NULL)
+			adjust_heap(heap, node);
 	}
 	return (node);
 }

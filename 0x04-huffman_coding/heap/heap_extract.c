@@ -148,7 +148,7 @@ void *heap_extract(heap_t *heap)
 
 	if (heap == NULL)
 		return (NULL);
-	if (heap->root == NULL || heap->data_cmp == NULL)
+	if (heap->root == NULL)
 		return (NULL);
 
 	/*GET the element to the bottom level of the heap. */
@@ -158,7 +158,8 @@ void *heap_extract(heap_t *heap)
 		data = heap->root->data;
 		/*Replace the root of the heap with the last element on the last level. */
 		heap->root->data = last;
-		adjust_heap(heap);
+		if (heap->data_cmp != NULL)
+			adjust_heap(heap);
 	}
 	return (data);
 }
