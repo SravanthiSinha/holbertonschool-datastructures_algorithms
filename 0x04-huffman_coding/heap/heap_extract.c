@@ -34,6 +34,7 @@ static char *int2bin(int a)
  * get_bottom_node - A function that deletes the bottom
  * node of a heap and fetches the data of bottom node
  * @heap:  A pointer to the heap where the node has to inserted
+ * @exit_status: set to EXIT_FAILURE if strdup fails
  * Return: A pointer to the bottom node
  */
 static void *get_bottom_node(heap_t *heap, int *exit_status)
@@ -147,7 +148,7 @@ void *heap_extract(heap_t *heap)
 
 	if (heap == NULL)
 		return (NULL);
-	if (heap->root == NULL || heap->size == 0 || heap->data_cmp == NULL)
+	if (heap->root == NULL || heap->data_cmp == NULL)
 		return (NULL);
 
 	/*GET the element to the bottom level of the heap. */
