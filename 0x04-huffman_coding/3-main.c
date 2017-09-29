@@ -53,7 +53,7 @@ int main(void)
 	heap_t *heap;
 
 	int array[] = {
-		34, 28, 2, 45, 23, 76, 33, 3, 11, 1
+		34, 2, 45, 23, 76
 	};
 	size_t size = sizeof(array) / sizeof(array[0]);
 	size_t i;
@@ -82,8 +82,9 @@ int main(void)
 	}
 	binary_tree_print(heap->root, print_int);
 	printf("Heap size: %lu\n\n", heap->size);
-
+	printf("Heap root: %p\n", (void *)heap->root->data);
 	extracted = (int *)heap_extract(heap);
+	printf("Heap root: %p\n", (void *)extracted);
 	if (extracted)
 		printf("Extracted: %d\n", *extracted);
 	binary_tree_print(heap->root, print_int);

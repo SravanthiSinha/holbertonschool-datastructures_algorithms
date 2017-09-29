@@ -36,59 +36,48 @@ static char *int2bin(int a)
  * @heap:  A pointer to the heap where the node has to inserted
  * Return: A pointer to the bottom node
  */
-static void *get_bottom_node(heap_t *heap)
+static void *get_bottom_node(heap_t *heap, int *exit_status)
 {
-	void *data;
-	binary_tree_node_t *temp, *parent;
+	void *data = NULL;
+	binary_tree_node_t *temp = NULL, *parent = NULL;
 	int l = 0, r = 0, pos, len, i = 0;
-	char *bin, *bin_str = int2bin((int)heap->size);
-	char *e = strchr(bin_str, '1');
+	char *bin = NULL, *b_str = int2bin((int)heap->size), *e = strchr(b_str, '1');
 
-	/* get the MSB index */
-	pos = (int)(e - bin_str);
-	bin = strdup(bin_str + pos + 1);
-	temp = heap->root;
-	len = strlen(bin);
-	while (i < len)
-	{
-		parent = temp;
-		if (bin[i] == '0')
-		{
-			temp = temp->left;
-			l++;
-			r = 0;
-		} else
-		{
-			temp = temp->right;
-			r++;
-			l = 0;
-		}
-		i++;
-	}
-	free(bin);
-	free(bin_str);
-	data = temp->data;
-	if (l > r)
-		parent->left = NULL;
+	pos = (int)(e - b_str); /* get the MSB index */
+	bin = strdup(b_str + pos + 1);
+	if (bin == NULL)
+		*exit_status = EXIT_FAILURE;
 	else
-		parent->right = NULL;
-	free(temp);
-	heap->size -= 1;
+	{
+		temp = heap->root;
+		len = strlen(bin);
+		while (i < len)
+		{
+			parent = temp;
+			if (bin[i] == '0')
+			{
+				temp = temp->left;
+				l++;
+				r = 0;
+			} else
+			{
+				temp = temp->right;
+				r++;
+				l = 0;
+			}
+			i++;
+		}
+		free(bin);
+		data = temp->data;
+		if (l > r)
+			parent->left = NULL;
+		else
+			parent->right = NULL;
+		free(temp);
+		heap->size -= 1;
+	}
+	free(b_str);
 	return (data);
-}
-
-/**
- * swap_int - swap intger pointers
- * @a: first no
- * @b: sec no
- */
-static void swap_int(int *a, int *b)
-{
-	int c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
 }
 
 /**
@@ -122,11 +111,11 @@ static void adjust_heap(heap_t *heap)
 			if (heap->data_cmp(temp->left->data, temp->right->data)
 			    > 0)
 			{
-				swap_int(temp->data, temp->right->data);
+				swap(&temp->data, &temp->right->data);
 				temp = temp->right;
 			} else
 			{
-				swap_int(temp->data, temp->left->data);
+				swap(&temp->data, &temp->left->data);
 				temp = temp->left;
 			}
 		} else if (temp->data && temp->left && ((temp->left->data &&
@@ -154,6 +143,7 @@ static void adjust_heap(heap_t *heap)
 void *heap_extract(heap_t *heap)
 {
 	void *data = NULL, *last = NULL;
+	int exit_status = EXIT_SUCCESS;
 
 	if (heap == NULL)
 		return (NULL);
@@ -161,10 +151,13 @@ void *heap_extract(heap_t *heap)
 		return (NULL);
 
 	/*GET the element to the bottom level of the heap. */
-	last = get_bottom_node(heap);
-	data = heap->root->data;
-	/*Replace the root of the heap with the last element on the last level. */
-	heap->root->data = last;
-	adjust_heap(heap);
+	last = get_bottom_node(heap, &exit_status);
+	if (exit_status == EXIT_SUCCESS)
+	{
+		data = heap->root->data;
+		/*Replace the root of the heap with the last element on the last level. */
+		heap->root->data = last;
+		adjust_heap(heap);
+	}
 	return (data);
 }
