@@ -39,18 +39,19 @@ static char *int2bin(int a)
  */
 static void *get_bottom_node(heap_t *heap, int *exit_status)
 {
-	void *data = NULL;
 	binary_tree_node_t *temp = NULL, *parent = NULL;
 	int l = 0, r = 0, pos, len, i = 0;
-	char *bin = NULL, *b_str = int2bin((int)heap->size), *e = strchr(b_str, '1');
+	char *bin = NULL, *b_str = int2bin((int)heap->size), *e =
+	    strchr(b_str, '1');
 
-	pos = (int)(e - b_str); /* get the MSB index */
+	pos = (int)(e - b_str);	/* get the MSB index */
 	bin = strdup(b_str + pos + 1);
 	if (bin == NULL)
 		*exit_status = EXIT_FAILURE;
 	else
 	{
 		temp = heap->root;
+		parent = temp;
 		len = strlen(bin);
 		while (i < len)
 		{
@@ -69,16 +70,13 @@ static void *get_bottom_node(heap_t *heap, int *exit_status)
 			i++;
 		}
 		free(bin);
-		data = temp->data;
 		if (l > r)
 			parent->left = NULL;
 		else
 			parent->right = NULL;
-		free(temp);
-		heap->size -= 1;
 	}
 	free(b_str);
-	return (data);
+	return (temp);
 }
 
 /**
@@ -109,8 +107,8 @@ static void adjust_heap(heap_t *heap)
 		if (temp->data && temp->left && temp->right && temp->left->data
 		    && temp->right->data)
 		{
-			if (heap->data_cmp(temp->left->data, temp->right->data)
-			    > 0)
+			if (heap->
+			    data_cmp(temp->left->data, temp->right->data) > 0)
 			{
 				swap(&temp->data, &temp->right->data);
 				temp = temp->right;
@@ -119,15 +117,17 @@ static void adjust_heap(heap_t *heap)
 				swap(&temp->data, &temp->left->data);
 				temp = temp->left;
 			}
-		} else if (temp->data && temp->left && ((temp->left->data &&
-							 heap->data_cmp(temp->data, temp->left->data) > 0)
-							|| temp->left->data == NULL))
+		} else if (temp->data && temp->left &&
+			   ((temp->left->data &&
+			     heap->data_cmp(temp->data, temp->left->data) > 0)
+			    || temp->left->data == NULL))
 		{
 			swap(&temp->data, &temp->left->data);
 			temp = temp->left;
-		} else if (temp->data && temp->right && ((temp->right->data &&
-							  heap->data_cmp(temp->data, temp->right->data) > 0)
-							 || temp->right->data == NULL))
+		} else if (temp->data && temp->right &&
+			   ((temp->right->data &&
+			     heap->data_cmp(temp->data, temp->right->data) > 0)
+			    || temp->right->data == NULL))
 		{
 			swap(&temp->data, &temp->right->data);
 			temp = temp->right;
@@ -143,7 +143,8 @@ static void adjust_heap(heap_t *heap)
  */
 void *heap_extract(heap_t *heap)
 {
-	void *data = NULL, *last = NULL;
+	void *data = NULL;
+	binary_tree_node_t *last = NULL, *extract_node;
 	int exit_status = EXIT_SUCCESS;
 
 	if (heap == NULL)
@@ -151,15 +152,32 @@ void *heap_extract(heap_t *heap)
 	if (heap->root == NULL)
 		return (NULL);
 
+	extract_node = heap->root;
 	/*GET the element to the bottom level of the heap. */
+	if (heap->root->left == NULL && heap->root->right == NULL)
+	{
+		data = heap->root->data;
+		free(heap->root);
+		heap->root = NULL;
+		heap->size--;
+		return (data);
+	}
 	last = get_bottom_node(heap, &exit_status);
 	if (exit_status == EXIT_SUCCESS)
 	{
-		data = heap->root->data;
 		/*Replace the root of the heap with the last element on the last level. */
-		heap->root->data = last;
-		if (heap->data_cmp != NULL)
+		if (last)
+		{
+			last->left = extract_node->left;
+			last->right = extract_node->right;
+			last->parent = NULL;
+			heap->root = last;
+		}
+		if (heap->data_cmp != NULL && heap->size > 1)
 			adjust_heap(heap);
+		data = extract_node->data;
+		free(extract_node);
+		heap->size--;
 	}
 	return (data);
 }
