@@ -1,7 +1,8 @@
 #include "heap.h"
 #include "huffman.h"
 /**
- * huffman_extract_and_insert- A function that extracts the two nodes of * the priority queue and insert a new one
+ * huffman_extract_and_insert- A function that extracts the two nodes of
+ * the priority queue and insert a new one
  * @priority_queue: A pointer to the priority queue to extract from
  * Return: 1 on success or 0 on failure
  */

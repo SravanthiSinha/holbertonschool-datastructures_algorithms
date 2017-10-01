@@ -135,7 +135,23 @@ static void adjust_heap(heap_t *heap)
 			return;
 	}
 }
-
+/**
+ * free_node- A function that frees a node
+ * @node:  A pointer to the node which has to be freed
+ */
+void free_node(binary_tree_node_t *node)
+{
+	if (node != NULL)
+	{
+		node->parent = NULL;
+		node->data = NULL;
+		node->left = NULL;
+		node->right = NULL;
+		free(node->data);
+		free(node);
+		node = NULL;
+	}
+}
 /**
  * heap_extract- A function that extratcs the root value in a Heap
  * @heap:  A pointer to the heap in which root has to be extracted
@@ -144,7 +160,7 @@ static void adjust_heap(heap_t *heap)
 void *heap_extract(heap_t *heap)
 {
 	void *data = NULL;
-	binary_tree_node_t *last = NULL, *extract_node;
+	binary_tree_node_t *last = NULL, *extract_node = NULL;
 	int exit_status = EXIT_SUCCESS;
 
 	if (heap == NULL)
@@ -153,10 +169,9 @@ void *heap_extract(heap_t *heap)
 		return (NULL);
 
 	extract_node = heap->root;
-	/*GET the element to the bottom level of the heap. */
 	if (heap->root->left == NULL && heap->root->right == NULL)
 	{
-		data = heap->root->data;
+		data = extract_node->data;
 		free(heap->root);
 		heap->root = NULL;
 		heap->size--;
@@ -165,19 +180,14 @@ void *heap_extract(heap_t *heap)
 	last = get_bottom_node(heap, &exit_status);
 	if (exit_status == EXIT_SUCCESS)
 	{
+		data = extract_node->data;
 		/*Replace the root of the heap with the last element on the last level. */
 		if (last)
-		{
-			last->left = extract_node->left;
-			last->right = extract_node->right;
-			last->parent = NULL;
-			heap->root = last;
-		}
+			swap(&heap->root->data, &last->data);
+	  free_node(last);
+	  heap->size--;
 		if (heap->data_cmp != NULL && heap->size > 1)
 			adjust_heap(heap);
-		data = extract_node->data;
-		free(extract_node);
-		heap->size--;
 	}
 	return (data);
 }

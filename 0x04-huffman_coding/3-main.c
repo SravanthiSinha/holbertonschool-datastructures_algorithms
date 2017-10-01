@@ -77,8 +77,6 @@ int main(void)
 			fprintf(stderr, "Failed to insert a node\n");
 			return (EXIT_FAILURE);
 		}
-		if (i % 4 == 0)
-			node = heap_insert(heap, NULL);
 	}
 	binary_tree_print(heap->root, print_int);
 	printf("Heap size: %lu\n\n", heap->size);
@@ -89,5 +87,6 @@ int main(void)
 		printf("Extracted: %d\n", *extracted);
 	binary_tree_print(heap->root, print_int);
 	printf("Heap size: %lu\n", heap->size);
+	heap_delete(heap, NULL);
 	return (EXIT_SUCCESS);
 }

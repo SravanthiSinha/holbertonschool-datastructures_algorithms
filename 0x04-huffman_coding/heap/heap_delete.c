@@ -30,8 +30,9 @@ void binary_tree_delete(binary_tree_node_t *node, void (*free_data)(void *))
  */
 void heap_delete(heap_t *heap, void (*free_data)(void *))
 {
-	if (heap == NULL || heap->root == NULL)
+	if (heap == NULL)
 		return;
 	binary_tree_delete(heap->root, free_data);
+	heap->size = 0;
 	free(heap);
 }
