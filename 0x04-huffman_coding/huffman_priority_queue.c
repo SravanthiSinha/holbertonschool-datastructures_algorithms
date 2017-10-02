@@ -9,7 +9,7 @@
  *
  * Return: Difference between the two symbols
  */
-int symbol_cmp(void *p1, void *p2)
+static int symbol_cmp(void *p1, void *p2)
 {
 	binary_tree_node_t *n1, *n2;
 	int c1, c2;
@@ -38,7 +38,7 @@ heap_t *huffman_priority_queue(char *data, size_t *freq, size_t size)
 	binary_tree_node_t *node, *nested;
 
 	priority_queue_heap = heap_create(symbol_cmp);
-	if (priority_queue_heap == NULL || data == NULL || freq == NULL)
+	if (priority_queue_heap == NULL || data == NULL || freq == NULL || size == 0)
 		return (NULL);
 	for (i = 0; i < size; i++)
 	{

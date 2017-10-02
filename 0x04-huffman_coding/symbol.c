@@ -1,6 +1,21 @@
 #include "huffman.h"
 
 /**
+ * symbol_delete- A function that deletes a symbol_t data structure
+ * @sym: symbol to be deleted
+ */
+void symbol_delete(void *sym)
+{
+	symbol_t *symbol = (symbol_t *)sym;
+
+	if (symbol != NULL)
+	{
+		free(symbol);
+		symbol = NULL;
+	}
+}
+
+/**
  * symbol_create- A function that creates a symbol_t data structure
  * @data: Data to be stored in the structure
  * @freq: data associated frequency

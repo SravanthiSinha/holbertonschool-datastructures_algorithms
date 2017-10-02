@@ -159,6 +159,68 @@ $ ./prio
 (d/13)      (e/16)     (f/36)
 $
 ```
+
+* 7) Huffman coding - Step 2: Extract
+
+Once we have our priority queue initialized, the next step is to build the Huffman tree. First we need to understand the process of building such a tree. We need to extract the two least frequent symbols from our priority queue, add their frequencies, and store this new frequency back in our priority queue.
+
+Remember that in our priority queue, each node stores a leaf node that stores our symbol_t \*. The goal here, is to make the two extracted nodes(containing the symbol_t \*) the children of the new node we will create (the one that will store the the sum of the two frequencies). The first extracted node will be the left child, and the second one will be the right child. Then this node will be stored (inside a node) in our priority queue.
+
+So, at the end of this process, our priority queue will see its size decreased by one (we extract two, we insert back one). Note that we will use the value -1 as the char data for the new symbol we will create. (In the example below, we print it as a dollar sign)
+
+huffman_extract_and_insert.c - Contains  a function that extracts the two nodes of the priority queue and insert a new one
+```
+$ gcc -Wall -Wextra -Werror -pedantic -Iheap/ -I./ heap/*.c 7-main.c symbol.c huffman_priority_queue.c huffman_extract_and_insert.c binary_tree_print.c -o extract
+$ ./extract
+         .--------(a/6)---------.
+   .--(b/11)---.          .--(c/12)
+(d/13)      (e/16)     (f/36)
+
+         .--------(c/12)---.
+   .--(d/13)---.        (e/16)
+(f/36)      ($/17)
+
+         .--(e/16)---.
+   .--($/17)      (f/36)
+($/25)
+$
+```
+
+* 8) Huffman coding - Step 3: Build Huffman tree
+
+Following the previous step, we now have to iterate the same operation until there is only one node remaining in our priority queue. This final node will store the root node of our Huffman tree.
+
+huffman_tree.c - Contains a function that builds the Huffman tree
+
+```
+$ gcc -Wall -Wextra -Werror -pedantic -Iheap/ -I./ heap/*.c 8-main.c symbol.c huffman_priority_queue.c huffman_extract_and_insert.c huffman_tree.c binary_tree_print.c -o huffman_tree
+$ ./huffman_tree
+   .--($/94)---------------------.
+(f/36)               .--------($/58)---------.
+               .--($/25)---.           .--($/33)--------.
+            (c/12)      (d/13)      (e/16)        .--($/17)---.
+                                                (a/6)      (b/11)
+$
+```
+
+* 9) Huffman coding - Step 4: Huffman codes
+
+Now that we have our Huffman tree, we are able to get the Huffman codes for each letter. This process is pretty straight forward: go through the Huffman tree starting at the root node. Each time you go to the left node, append a 0 to the code. Each time you go to the right, append a 0 to the code. When you hit a leaf node, get the letter and print its corresponding Huffman code.
+
+huffman_codes.c - Contains a function that build the Huffman tree and print the resulting Huffman codes for each symbol
+
+```
+$gcc -Wall -Wextra -Werror -pedantic -Iheap/ -I./ heap/*.c 9-main.c symbol.c huffman_priority_queue.c huffman_extract_and_insert.c huffman_tree.c huffman_codes.c binary_tree_print.c -o huffman_codes
+$./huffman_codes
+f: 0
+c: 100
+d: 101
+e: 110
+a: 1110
+b: 1111
+$
+```
+
 ### Usefull Resources:
 * [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap)
 * [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding)

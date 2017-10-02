@@ -136,23 +136,6 @@ static void adjust_heap(heap_t *heap)
 	}
 }
 /**
- * free_node- A function that frees a node
- * @node:  A pointer to the node which has to be freed
- */
-void free_node(binary_tree_node_t *node)
-{
-	if (node != NULL)
-	{
-		node->parent = NULL;
-		node->data = NULL;
-		node->left = NULL;
-		node->right = NULL;
-		free(node->data);
-		free(node);
-		node = NULL;
-	}
-}
-/**
  * heap_extract- A function that extratcs the root value in a Heap
  * @heap:  A pointer to the heap in which root has to be extracted
  * Return: A pointer to the data that was stored in the root node of the heap
@@ -184,7 +167,8 @@ void *heap_extract(heap_t *heap)
 		/*Replace the root of the heap with the last element on the last level. */
 		if (last)
 			swap(&heap->root->data, &last->data);
-	  free_node(last);
+	  free(last);
+		last = NULL;
 	  heap->size--;
 		if (heap->data_cmp != NULL && heap->size > 1)
 			adjust_heap(heap);

@@ -31,6 +31,16 @@ int huffman_extract_and_insert(heap_t *priority_queue)
 	nested = binary_tree_node(NULL, symbol);
 	if (nested == NULL)
 		return (0);
+	if (first_node)
+	{
+		nested->left = first_node;
+		first_node->parent = nested;
+	}
+	if (second_node)
+	{
+		nested->right = second_node;
+		second_node->parent = nested;
+	}
 	node = heap_insert(priority_queue, nested);
 	if (node == NULL)
 		return (0);

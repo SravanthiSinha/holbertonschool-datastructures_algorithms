@@ -74,6 +74,6 @@ int main(void)
 
 	huffman_extract_and_insert(priority_queue);
 	binary_tree_print(priority_queue->root, nested_print);
-heap_delete(priority_queue, NULL);
+	heap_delete(priority_queue, NULL);
 	return (EXIT_SUCCESS);
 }
