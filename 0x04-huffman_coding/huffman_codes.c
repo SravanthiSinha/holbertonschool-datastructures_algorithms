@@ -10,14 +10,14 @@ void printArr(int arr[], int top)
 
 	if (top == 0)
 		printf("%d", arr[0]);
-		else
-		{
-	while (i < top)
+	else
 	{
-		printf("%d", arr[i]);
-		i++;
+		while (i < top)
+		{
+			printf("%d", arr[i]);
+			i++;
+		}
 	}
-}
 }
 
 /**
@@ -62,9 +62,13 @@ int huffman_codes(char *data, size_t *freq, size_t size)
 	int arr[1024];
 
 	arr[0] = 1;
-	if (root == NULL)
-		return (0);
-	print_codes(root, arr, 0);
-	binary_tree_delete(root, symbol_delete);
+	if (size > 0 && data != NULL && freq != NULL)
+	{
+		if (root == NULL)
+			return (0);
+
+		print_codes(root, arr, 0);
+		binary_tree_delete(root, symbol_delete);
+	}
 	return (1);
 }
