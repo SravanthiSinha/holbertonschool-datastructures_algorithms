@@ -107,26 +107,30 @@ static void adjust_heap(heap_t *heap)
 		if (temp->data && temp->left && temp->right && temp->left->data
 		    && temp->right->data)
 		{
-			if (heap->
-			    data_cmp(temp->left->data, temp->right->data) > 0)
+			if ((heap->data_cmp(temp->data, temp->right->data) >= 0)
+			    && (heap->
+				data_cmp(temp->right->data,
+					 temp->left->data) < 0))
 			{
 				swap(&temp->data, &temp->right->data);
 				temp = temp->right;
-			} else
+			} else if (heap->
+				   data_cmp(temp->data, temp->left->data) >= 0)
 			{
 				swap(&temp->data, &temp->left->data);
 				temp = temp->left;
-			}
+			} else
+				return;
 		} else if (temp->data && temp->left &&
 			   ((temp->left->data &&
-			     heap->data_cmp(temp->data, temp->left->data) > 0)
+			     heap->data_cmp(temp->data, temp->left->data) >= 0)
 			    || temp->left->data == NULL))
 		{
 			swap(&temp->data, &temp->left->data);
 			temp = temp->left;
 		} else if (temp->data && temp->right &&
 			   ((temp->right->data &&
-			     heap->data_cmp(temp->data, temp->right->data) > 0)
+			     heap->data_cmp(temp->data, temp->right->data) >= 0)
 			    || temp->right->data == NULL))
 		{
 			swap(&temp->data, &temp->right->data);
@@ -135,6 +139,7 @@ static void adjust_heap(heap_t *heap)
 			return;
 	}
 }
+
 /**
  * heap_extract- A function that extratcs the root value in a Heap
  * @heap:  A pointer to the heap in which root has to be extracted
@@ -167,9 +172,9 @@ void *heap_extract(heap_t *heap)
 		/*Replace the root of the heap with the last element on the last level. */
 		if (last)
 			swap(&heap->root->data, &last->data);
-	  free(last);
+		free(last);
 		last = NULL;
-	  heap->size--;
+		heap->size--;
 		if (heap->data_cmp != NULL && heap->size > 1)
 			adjust_heap(heap);
 	}
