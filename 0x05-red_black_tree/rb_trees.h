@@ -1,11 +1,14 @@
 #ifndef _RB_TREES_H_
 #define _RB_TREES_H_
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MAX(X, Y) (((X) >= (Y)) ? (X) : (Y))
+#define nullptr NULL
+#define IsRed(node) (node != nullptr && node->color == RED)
+#define IsBlack(node) (node != nullptr && node->color == BLACK)
 
 /**
  * enum rb_color_e - Possible color of a Red-Black tree
@@ -43,4 +46,5 @@ rb_tree_t *rb_tree_node(rb_tree_t *parent, int value, rb_color_t color);
 int rb_tree_is_valid(const rb_tree_t *tree);
 rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value);
 rb_tree_t *array_to_rb_tree(int *array, size_t size);
-#endif /* _RB_TREES_H_ */
+rb_tree_t *rb_tree_remove(rb_tree_t *root, int n);
+#endif				/* _RB_TREES_H_ */
