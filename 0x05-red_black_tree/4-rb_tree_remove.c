@@ -189,7 +189,7 @@ rb_tree_t *rb_tree_remove(rb_tree_t *root, int value)
 	}
 	/*'n' didn't exist in the tree */
 	if (node == nullptr)
-		return (nullptr);
+		return (root);
 	nodeBeingRemoved = GetNodetoBeRemoved(node);
 	/*At most one will not be a nullptr */
 	nodeToBeReplaced = nodeBeingRemoved->left == nullptr ? nodeBeingRemoved->right

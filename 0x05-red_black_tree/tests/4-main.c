@@ -12,7 +12,6 @@ void rb_tree_print(const rb_tree_t *tree);
 int main(void)
 {
 	rb_tree_t *tree;
-
 	int array[] = { 20, 30, 25, 89, 10, 35, 250, 8, 7 };
 	size_t n = sizeof(array) / sizeof(array[0]);
 
@@ -21,12 +20,11 @@ int main(void)
 		return (1);
 
 	rb_tree_print(tree);
-
 	tree = rb_tree_remove(tree, 10);
 	printf("\nDeleted: %d\n", 10);
-
 	rb_tree_print(tree);
-
+	printf("Red-Black Tree is %s\n",
+	       rb_tree_is_valid(tree) ? "valid" : "Invalid");
 	tree = rb_tree_remove(tree, 25);
 	printf("\nDeleted: %d\n", 25);
 	rb_tree_print(tree);
@@ -42,8 +40,13 @@ int main(void)
 	rb_tree_print(tree);
 	printf("Red-Black Tree is %s\n",
 	       rb_tree_is_valid(tree) ? "valid" : "Invalid");
-	tree = rb_tree_remove(tree, 89);
-	printf("\nDeleted: %d\n", 89);
+	tree = rb_tree_remove(tree, 30);
+	printf("\nDeleted: %d\n", 30);
+	rb_tree_print(tree);
+	printf("Red-Black Tree is %s\n",
+	       rb_tree_is_valid(tree) ? "valid" : "Invalid");
+	tree = rb_tree_remove(tree, 0);
+	printf("\nDeleted: %d\n", 0);
 	rb_tree_print(tree);
 	printf("Red-Black Tree is %s\n",
 	       rb_tree_is_valid(tree) ? "valid" : "Invalid");
