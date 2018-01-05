@@ -67,5 +67,6 @@ typedef struct graph_s
 } graph_t;
 
 graph_t *graph_create(void);
-
+vertex_t *graph_add_vertex(graph_t *graph, const char *str);
+void graph_display(const graph_t *graph);
 #endif
