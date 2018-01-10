@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "graphs.h"
-
+void graph_display(const graph_t *graph);
 /**
  * main - Entry point
  *
