@@ -89,11 +89,10 @@ size_t depth_first_traverse(const graph_t *graph,
 		while (curr)
 		{
 			if (visited[curr->index] == BACKTRACK)
-				dfs_util(curr->index, visited, depth, &depth,
+				dfs_util(curr->index, visited, 0, &depth,
 					 graph, action);
 			curr = curr->next;
 		}
-
 		free(visited);
 	}
 	return (depth);
