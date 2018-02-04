@@ -6,6 +6,8 @@
 
 #define  SUCCESS 1
 #define  FAILURE 0
+#define  EXPLORED 1
+#define BACKTRACK 0
 /**
  * enum edge_type_e - Enumerates the different types of
  * connection between two vertices
@@ -71,6 +73,11 @@ typedef struct graph_s
 void graph_display(const graph_t *graph);
 graph_t *graph_create(void);
 vertex_t *graph_add_vertex(graph_t *graph, const char *str);
-int graph_add_edge(graph_t *g, const char *s, const char *d, edge_type_t type);
+int graph_add_edge(graph_t *g, const char *s, const char *d, edge_type_t t);
 void graph_delete(graph_t *graph);
+size_t depth_first_traverse(const graph_t *graph,
+			    void (*action)(const vertex_t *v, size_t depth));
+size_t breadth_first_traverse(const graph_t *graph,
+			      void (*action)(const vertex_t *v,
+					      size_t depth));
 #endif
