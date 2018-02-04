@@ -96,5 +96,5 @@ size_t depth_first_traverse(const graph_t *graph,
 
 		free(visited);
 	}
-	return (curr_depth);
+	return (depth);
 }
