@@ -126,7 +126,7 @@ size_t breadth_first_traverse(const graph_t *graph,
 			while (edge)
 			{
 				dest = edge->dest;
-				if (dest && visited[dest->index] != EXPLORED)
+				if (dest && visited[dest->index] == UNEXPLORED)
 				{
 					enqueue(q, dest->index);
 					visited[dest->index] = BACKTRACK;
