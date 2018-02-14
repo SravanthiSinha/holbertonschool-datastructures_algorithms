@@ -57,7 +57,6 @@ int main(void)
 			}
 		}
 	}
-  graph_display(graph);
 	depth = breadth_first_traverse(graph, &traverse_action);
 	printf("\nDepth: %lu\n", depth);
 

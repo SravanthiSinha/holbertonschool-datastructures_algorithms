@@ -10,7 +10,7 @@
 #define  UNEXPLORED 0
 #define  EXPLORED 1
 #define BACKTRACK 2
-#define SIZE INT_MAX
+#define SIZE 65536
 #define LEVELBREAK -60
 /**
  * enum edge_type_e - Enumerates the different types of
