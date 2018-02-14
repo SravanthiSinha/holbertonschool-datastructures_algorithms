@@ -20,7 +20,7 @@ queue_t *createqueue_t()
  */
 void enqueue(queue_t *q, int value)
 {
-	if (q->rear == SIZE - 1)
+	if (q->rear == (SIZE - 1))
 		printf("\nqueue_t is Full!!");
 	else
 	{
@@ -34,10 +34,10 @@ void enqueue(queue_t *q, int value)
 /**
  * dequeue - A function that fetches first item in queue
  * @q: queue
- *
+ * @peek: whether to perform dequeue or just a peek
  * Return: first item in queue on success,  -1 on failure
  */
-int dequeue(queue_t *q)
+int dequeue(queue_t *q, int peek)
 {
 	int item;
 
@@ -47,6 +47,8 @@ int dequeue(queue_t *q)
 		item = -1;
 	} else
 	{
+		if (peek)
+			return (q->items[q->front]);
 		item = q->items[q->front];
 		q->front++;
 		if (q->front > q->rear)
@@ -106,14 +108,14 @@ size_t breadth_first_traverse(const graph_t *graph,
 	enqueue(q, curr->index);	enqueue(q, LEVELBREAK);
 	while (q->rear != -1)
 	{
-		index = dequeue(q);
+		index = dequeue(q, 0);
 		if (index == LEVELBREAK)
 		{
 			breadth++;
 			enqueue(q, LEVELBREAK);
-			index = dequeue(q);
-			if (index == LEVELBREAK)
+			if (dequeue(q, 1) == LEVELBREAK)
 				break;
+			continue;
 		}
 		curr = get_vertex_index(graph, index);
 		if (visited[curr->index] != EXPLORED)
@@ -133,6 +135,6 @@ size_t breadth_first_traverse(const graph_t *graph,
 			}
 		}
 	}
-	free(visited);
+	free(visited);	free(q);
 	return (breadth - 1);
 }
