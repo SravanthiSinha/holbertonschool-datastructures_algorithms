@@ -29,7 +29,7 @@ vertex_t *get_vertex_index(const graph_t *graph, size_t index)
 }
 
 /**
- * depth_first_traverse - A function that goes through a graph using the
+ * dfs_util - A function that goes through a graph using the
  * depth -first algorithm.
  * @v: index of the vertex
  * @visited: array of nodes marked visited or not
@@ -47,7 +47,7 @@ void dfs_util(int v, size_t *visited, size_t curr_depth, size_t *depth,
 	edge_t *edge;
 
 	curr = get_vertex_index(graph, v);
-	if (curr != NULL && visited[v] == BACKTRACK)
+	if (curr != NULL && visited[v] != EXPLORED)
 	{
 		action(curr, curr_depth);
 		if (curr_depth > *depth)
@@ -57,7 +57,7 @@ void dfs_util(int v, size_t *visited, size_t curr_depth, size_t *depth,
 		while (edge != NULL)
 		{
 			dest = edge->dest;
-			if (visited[dest->index] == BACKTRACK)
+			if (visited[dest->index] != EXPLORED)
 			{
 				dfs_util(dest->index, visited, curr_depth + 1,
 					 depth, graph, action);
@@ -86,9 +86,9 @@ size_t depth_first_traverse(const graph_t *graph,
 		visited = calloc(graph->nb_vertices, sizeof(size_t));
 
 		curr = graph->vertices;
-		while (curr)
+		if (curr)
 		{
-			if (visited[curr->index] == BACKTRACK)
+			if (visited[curr->index] == UNEXPLORED)
 				dfs_util(curr->index, visited, 0, &depth,
 					 graph, action);
 			curr = curr->next;
