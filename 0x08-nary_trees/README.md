@@ -9,3 +9,5 @@ The projects aims at learning N-ary trees
 * 0-nary_tree_insert.c -  A function that insert a node in a N-ary tree.
 * 1-nary_tree_delete.c - A function that deallocates an entire N-ary tree.
 * 2-nary_tree_traverse.c - A function that goes through an N-ary tree, node by node.
+* 3-nary_tree_diameter.c - A function that computes the diameter of an N-ary tree.
+* 4-path_exists.c - A function that checks if a path exists in an N-ary tree.
