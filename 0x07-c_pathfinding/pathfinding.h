@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "queues.h"
 #include "graphs.h"
 
@@ -12,6 +13,10 @@
 #define VISITED '+'
 #define START 'S'
 #define GOAL 'G'
+
+#define  UNEXPLORED '0'
+#define  EXPLORED '1'
+#define BACKTRACK '2'
 /**
  * struct point_s - Structure storing coordinates
  *
@@ -26,5 +31,6 @@ typedef struct point_s
 
 queue_t *backtracking_array(char **map, int rows, int cols,
 			    point_t const *start, point_t const *target);
-
+queue_t *backtracking_graph(graph_t *graph, vertex_t const *start,
+			    vertex_t const *target);
 #endif
