@@ -17,7 +17,7 @@ size_t nary_tree_depth(nary_tree_t const *root)
 	/* Check for all children and find the maximum depth */
 	while (list)
 	{
-		maxdepth = MAX(maxdepth, nary_tree_depth(list));
+		maxdepth = MAXIMUM(maxdepth, nary_tree_depth(list));
 		list = list->next;
 	}
 	return (1 + maxdepth);
@@ -54,8 +54,8 @@ size_t nary_tree_diameter(nary_tree_t const *root)
 	/* Check for all children and find the maximum depth */
 	while (list)
 	{
-		diameter = MAX(diameter, nary_tree_diameter(list));
+		diameter = MAXIMUM(diameter, nary_tree_diameter(list));
 		list = list->next;
 	}
-	return (MAX(diameter, max1 + max2 + 1));
+	return (MAXIMUM(diameter, max1 + max2 + 1));
 }

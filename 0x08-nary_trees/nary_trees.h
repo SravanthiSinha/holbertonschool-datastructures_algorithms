@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
+#define MAXIMUM(X, Y) (((X) > (Y)) ? (X) : (Y))
 /**
  * struct nary_tree_s - N-ary tree node structure
  *
