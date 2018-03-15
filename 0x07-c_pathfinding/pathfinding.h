@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include "queues.h"
 #include "graphs.h"
 
@@ -17,6 +18,8 @@
 #define  UNEXPLORED '0'
 #define  EXPLORED '1'
 #define BACKTRACK '2'
+#define INFINITY  UINT_MAX
+#define V graph->nb_vertices
 /**
  * struct point_s - Structure storing coordinates
  *
@@ -33,4 +36,8 @@ queue_t *backtracking_array(char **map, int rows, int cols,
 			    point_t const *start, point_t const *target);
 queue_t *backtracking_graph(graph_t *graph, vertex_t const *start,
 			    vertex_t const *target);
+queue_t *dijkstra_graph(graph_t *graph, vertex_t const *start,
+			vertex_t const *target);
+queue_t *a_star_graph(graph_t *graph, vertex_t const *start,
+		      vertex_t const *target);
 #endif

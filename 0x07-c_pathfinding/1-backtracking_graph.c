@@ -49,7 +49,7 @@ void stack_pop(queue_t *q1)
  *
  * Return: vertex on success,  NULL on failure
  */
-vertex_t *get_vertex_index(const graph_t graph, size_t index)
+vertex_t *get_vertex_index(const graph_t *graph, size_t index)
 {
 	vertex_t *node;
 
@@ -78,7 +78,7 @@ vertex_t *get_vertex_index(const graph_t graph, size_t index)
  * @index: current vertex index
  * Return: 1 if path exists else 0
  */
-int findpath(char *visited, queue_t q, const graph_t graph, size_t index)
+int findpath(char *visited, queue_t *q, const graph_t *graph, size_t index)
 {
 	char *city;
 	vertex_t *curr;
@@ -132,6 +132,11 @@ queue_t *backtracking_graph(graph_t *graph, vertex_t const *start,
 		visited[target->index] = GOAL;
 		findpath(visited, q, graph, start->index);
 		free(visited);
+		if (!q->front)
+		{
+			free(q);
+			q = NULL;
+		}
 	}
 	return (q);
 }

@@ -89,10 +89,10 @@ int findpath(char **map, int rows, int cols, queue_t *q, int x, int y)
 {
 	point_t *curr;
 
-	if (x < 0 || y < 0 || x > cols || y > rows)
+	if (x < 0 || y < 0 || x >= cols || y >= rows)
 		/*outside maze */
 		return (0);
-	if (map[x][y] == GOAL)
+	if (map[y][x] == GOAL)
 	{
 		curr = malloc(sizeof(point_t));
 		curr->x = x;
@@ -102,7 +102,7 @@ int findpath(char **map, int rows, int cols, queue_t *q, int x, int y)
 		printf("Checking coordinates [%d, %d]\n", x, y);
 		return (1);
 	}
-	if (map[y][x] != OPEN)
+	if (map[y][x] != OPEN && map[y][x] != START)
 		return (0);
 	printf("Checking coordinates [%d, %d]\n", x, y);
 	map[y][x] = VISITED;
@@ -144,10 +144,16 @@ queue_t *backtracking_array(char **map, int rows, int cols,
 	map_cpy = map_create_delete(map, rows, cols, 1);
 	if (map_cpy)
 	{
-		map_cpy[start->x][start->y] = VISITED;
-		map_cpy[target->x][target->y] = GOAL;
+		map_cpy[start->y][start->x] = START;
+		map_cpy[target->y][target->x] = GOAL;
 		findpath(map_cpy, rows, cols, q, start->x, start->y);
 		map_create_delete(map_cpy, rows, cols, 0);
 	}
+	if (!q->front)
+	{
+		free(q);
+		q = NULL;
+	}
+
 	return (q);
 }
