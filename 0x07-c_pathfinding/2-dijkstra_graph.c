@@ -32,17 +32,17 @@ vertex_t *get_vertex_index(const graph_t *graph, size_t index)
  * get_smallest - A function that fetches index of vertex with smallest
  * tentative distance among the nodes in the unvisited
  * @graph: A pointer to the graph
- * @dist:  The array to track the distances from start to a vertex
+ * @dest:  The array to track the distances from start to a vertex
  * @v: The array to track if vertex is visited or not
  * @index: The index with minimun identifying the vertex with minimum
  * tentative distance
  *
  * Return: minimum tentative distance among the nodes in the unvisited
  */
-size_t get_smallest(graph_t *graph, size_t *dist, size_t *v, size_t *index)
+size_t get_smallest(graph_t *graph, size_t *dest, size_t *v, size_t *index)
 {
-	size_t min = INFINITY;
-	size_t *a = dist;
+	size_t min = INF;
+	size_t *a = dest;
 	size_t i = 0;
 
 	while (i < V)
@@ -75,7 +75,7 @@ void loadQueue(graph_t *graph, queue_t *q, char **parent,
 	vertex_t *v;
 
 	t = target->index;
-	if (parent[t] || parent[start->index])
+	if (parent[t])
 	{
 		queue_push_front(q, strdup(target->content));
 		while (strcmp(parent[t], start->content))
@@ -102,33 +102,33 @@ void loadQueue(graph_t *graph, queue_t *q, char **parent,
  * @graph: The pointer to the graph to go through
  * @visited: The array to track if vertex is visited or not
  * @parent: The array to track parents of vertices
- * @dist:  The array to track the distances from start to a vertex
+ * @dest:  The array to track the distances from start to a vertex
  * @start: A pointer to the starting vertex
  * @target: A pointer to the target vertex
  * @index: index of a current vertex tracked
  */
 void findShortestPath(graph_t *graph, size_t *visited, char **parent,
-		      size_t *dist, const vertex_t *start,
+		      size_t *dest, const vertex_t *start,
 		      const vertex_t *target, size_t index)
 {
 	vertex_t *curr, *child;
 	edge_t *edge;
-	size_t smallest = INFINITY, alt;
+	size_t smallest = INF, alt;
 
 	curr = get_vertex_index(graph, index);
 	if (!curr)
 		return;
 	edge = curr->edges;
 	printf("Checking %s, distance from %s is %ld\n", curr->content,
-	       start->content, dist[index]);
+	       start->content, dest[index]);
 	/*For the current node, consider all of its unvisited neighbors */
 	while (edge && visited[index] == UNEXPLORED)
 	{
 		child = edge->dest;
-		alt = dist[index] + edge->weight;
-		if (child && (dist[child->index] > alt))
+		alt = dest[index] + edge->weight;
+		if (child && (dest[child->index] > alt))
 		{
-			dist[child->index] = dist[index] + edge->weight;
+			dest[child->index] = dest[index] + edge->weight;
 			if (parent[child->index])
 			{
 				free(parent[child->index]);
@@ -139,11 +139,11 @@ void findShortestPath(graph_t *graph, size_t *visited, char **parent,
 		edge = edge->next;
 	}
 	visited[index] = EXPLORED;
-	smallest = get_smallest(graph, dist, visited, &index);
-	if (visited[target->index] == EXPLORED || smallest == INFINITY)
+	smallest = get_smallest(graph, dest, visited, &index);
+	if (visited[target->index] == EXPLORED || smallest == INF)
 		return;
 
-	findShortestPath(graph, visited, parent, dist, start, target,
+	findShortestPath(graph, visited, parent, dest, start, target,
 			 index);
 }
 
@@ -161,7 +161,7 @@ queue_t *dijkstra_graph(graph_t *graph, vertex_t const *start,
 			vertex_t const *target)
 {
 	queue_t *q;
-	size_t *dist, i, *visited;
+	size_t *dest, i, *visited;
 	char **parent;
 
 	if (graph != NULL)
@@ -169,19 +169,19 @@ queue_t *dijkstra_graph(graph_t *graph, vertex_t const *start,
 		q = queue_create();
 		visited = (size_t *)malloc(graph->nb_vertices * sizeof(size_t));
 		parent = (char **)malloc(graph->nb_vertices * sizeof(char *));
-		dist = (size_t *) malloc(graph->nb_vertices * sizeof(size_t));
+		dest = (size_t *) malloc(graph->nb_vertices * sizeof(size_t));
 		for (i = 0; i < graph->nb_vertices; i++)
 		{
-			dist[i] = INFINITY;	/*Assign to every node a tentative distance value */
+			dest[i] = INF;	/*Assign to every node a tentative distance value */
 			visited[i] = UNEXPLORED;	/*Mark all nodes visited. */
 			parent[i] = NULL;
 		}
-		dist[start->index] = 0;
-		findShortestPath(graph, visited, parent, dist, start, target,
+		dest[start->index] = 0;
+		findShortestPath(graph, visited, parent, dest, start, target,
 				 start->index);
 		loadQueue(graph, q, parent, start, target);
 		free(visited);
-		free(dist);
+		free(dest);
 		for (i = 0; i < graph->nb_vertices; i++)
 		{
 			free(parent[i]);

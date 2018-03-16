@@ -18,7 +18,7 @@
 #define  UNEXPLORED '0'
 #define  EXPLORED '1'
 #define BACKTRACK '2'
-#define INFINITY  UINT_MAX
+#define INF  UINT_MAX
 #define V graph->nb_vertices
 /**
  * struct point_s - Structure storing coordinates
