@@ -42,24 +42,24 @@ vertex_t *get_vertex_index(const graph_t *graph, size_t index)
  *
  * Return: minimum tentative gScoreance among the nodes in the unvisited
  */
- size_t get_smallest(graph_t *graph, size_t *fScore, size_t *v, size_t *index)
- {
- 	size_t min = INF;
- 	size_t *a = fScore;
- 	size_t i = 0;
+size_t get_smallest(graph_t *graph, size_t *fScore, size_t *v, size_t *index)
+{
+	size_t min = INF;
+	size_t *a = fScore;
+	size_t i = 0;
 
- 	while (i < V)
- 	{
- 		if (*a < min && v[i] == UNEXPLORED)
- 		{
- 			min = *a;
- 			*index = i;
- 		}
- 		a++;
- 		i++;
- 	}
- 	return (min);
- }
+	while (i < V)
+	{
+		if (*a < min && v[i] == UNEXPLORED)
+		{
+			min = *a;
+			*index = i;
+		}
+		a++;
+		i++;
+	}
+	return (min);
+}
 
 /**
  * loadQueue - A function that loads the queue with vertices of shortest path
